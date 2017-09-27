@@ -1,0 +1,58 @@
+
+/*
+selector[,selector2...] {
+    property:value [value1 value2 ...]; 
+    peroperty:value;...
+} */
+
+h1, h2{
+    color:red;
+}
+
+h1:hover, h2:hover{
+    opacity: 0.5;
+}
+
+/* > direct link " " any child https://www.w3schools.com/css/css_combinators.asp */
+p>a{
+    text-decoration: none;
+    color: firebrick
+}
+
+a:hover{
+    color: green;
+}
+
+p span{
+    font-weight: bold;
+}
+
+p span.important{
+    font-style: italic;
+}
+
+
+.danger{
+    color: yellow;
+}
+
+#logo{
+    color: blue;
+}
+
+span:first-child{
+    font-size: 20px;
+}
+
+p::first-letter{
+    font-size: 2em;
+    font-weight: bolder;
+}
+
+p::first-line{
+    letter-spacing: 1px;
+}
+
+p::after{
+    content: '\00b6';
+}
