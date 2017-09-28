@@ -39,7 +39,9 @@ body {
 	margin: 0;
 	padding: 0;
 }
-
+body>section{
+    text-align: center;
+}
 header {
 	background-color: #ADA;
 	border: 2px ridge silver;
