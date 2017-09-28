@@ -1,28 +1,30 @@
-<!doctype html>
-<html lang="zxx">
-    <head>
-        <meta charset="utf-8" />
-        <title>Watcher</title>
-                <link rel="stylesheet" type="text/css" href="style/style.css" media="all"/>
-
-    </head>
-    <body>
-        <header>Header</header>
-        <nav>
-            Navigation
-            <a> link1</a>
-            <a> link2</a>
-            <a> link3</a>
-            <a> link4</a>
-        </nav>
-        <main>
-            <aside>bla bla</aside>
-            <section>
-                <article>product 1</article>
-                <article>product 2</article>
-                <article>product 3</article>
-            </section>
-        </main>
-        <footer>footer</footer>
-    </body>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<link rel="stylesheet" type="text/css" href="layout_responsive.css" />
+	<title>Layout Example</title>
+</head>
+<body>
+	<header class="row"><h1>This is the header</h1></header>
+	<div class="row">
+		<nav class="column col-1">
+			<a href="example.html">Link 1</a>
+			<a href="example.html">Link 2</a>
+			<a href="example.html">Link 3</a>
+			<a href="example.html">Link 4</a>
+		</nav>
+		<section class="column col-3">
+			<h2>3-Columns Layout with Header and Footer</h2>
+			<p>Eeuismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exercitation ulliam corper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>
+			<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.</p> 
+			<p>Duis autem veleum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel willum lunombro dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim.</p> 
+		</section>
+		<aside class="column col-1">
+			<h2>Info</h2>
+			<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exercitation ulliam corper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>
+		</aside>
+	</div>
+	<footer class="row">This is the footer</footer>
+</body>
 </html>
