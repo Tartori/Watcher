@@ -12,12 +12,7 @@
         <p> some description</p>
     </section>
 	<div class="row">
-		<nav class="column col-1">
-			<a href="example.html">Link 1</a>
-			<a href="example.html">Link 2</a>
-			<a href="example.html">Link 3</a>
-			<a href="example.html">Link 4</a>
-		</nav>
+		<?php include('navigation.php'); ?>
 		<section class="column col-4">
 			<h2>3-Columns Layout with Header and Footer</h2>
 			<p>Eeuismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exercitation ulliam corper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>
