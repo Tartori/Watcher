@@ -6,13 +6,10 @@
 	<title>Layout Example</title>
 </head>
 <body>
-	<header class="row"><h1>This is the header</h1></header>
-    <section class="row">
-        <h1> Discounts YAY!!</h1>
-        <p> some description</p>
-    </section>
+	<?php include('php/header.php'); ?>
+	<?php include('php/wheel.php'); ?>	
 	<div class="row">
-		<?php include('navigation.php'); ?>
+		<?php include('php/navigation.php'); ?>
 		<section class="column col-4">
 			<h2>3-Columns Layout with Header and Footer</h2>
 			<p>Eeuismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exercitation ulliam corper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>
@@ -24,6 +21,6 @@
 			<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exercitation ulliam corper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>
 		</aside> -->
 	</div>
-	<footer class="row">This is the footer</footer>
+	<?php include('php/footer.php'); ?>
 </body>
 </html>
