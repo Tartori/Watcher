@@ -1,0 +1,92 @@
+/*--- RWD ---*/
+.row {
+	margin: 10px 10px;
+	display: relative;
+	overflow: hidden;
+}
+.row:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+.column {
+	display: relative;
+	float: left;
+	box-sizing: border-box;
+	padding: 2%;
+	overflow: hidden;
+}
+
+/* 5-column design */
+.col-1 { width: 20%; }
+.col-2 { width: 40%; }
+.col-3 { width: 60%; }
+.col-4 { width: 80%; }
+
+@media only screen and (max-width: 580px) {
+	.column { width: 100%; margin-bottom: 10px; }
+	.column:last-child { margin-bottom: 0; }
+}
+
+
+
+/*--- Rest of CSS ---*/
+
+body {
+	color: black; 
+	background-color: #DDD;
+	font-family: Helvetica,Arial,sans-serif;
+	margin: 0;
+	padding: 0;
+}
+body>section{
+    text-align: center;
+}
+header {
+	background-color: #ADA;
+	border: 2px ridge silver;
+}
+header h1 {
+	font-size: 18pt;
+	font-weight:bold;
+	text-align: center;
+}
+footer {
+	font-size: 10pt;
+	text-align: center;
+	background-color: #DEF; 
+	border: 1px solid silver;
+}
+nav {
+	background-color: white;
+	border: 1px dashed silver;
+}
+nav a {
+	font-size: 10pt;
+	display:block;
+	padding: 1.5mm;
+	font-weight: bold;
+}
+aside { 
+	background-color: #EEE; 
+	border: 1px dashed silver;
+}
+aside h2 {
+	font-size: 12pt;
+	margin: 0.5mm 0mm;
+}
+aside p {
+	font-size: 8pt;
+	margin: 0.5mm 0mm;
+}
+section {
+	background-color: white;
+	border: 1px dashed silver;
+}
+section h2 {
+	font-size: 14pt;
+}
+section p {
+	font-size: 12pt;
+	margin: 3mm 0;
+}
