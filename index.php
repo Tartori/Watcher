@@ -1,3 +1,6 @@
+<?php
+    require("lib/helpers.php")
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,17 +12,19 @@
 	<?php include('php/header.php'); ?>
 	<?php include('php/wheel.php'); ?>	
 	<div class="row">
-		<?php include('php/navigation.php'); ?>
+		<nav class="column col-1">
+			<?php navigation($language, $pageId); ?>
+			<div><?php languages($language, $pageId); ?></div>
+		</nav>
 		<section class="column col-4">
-			<h2>3-Columns Layout with Header and Footer</h2>
-			<p>Eeuismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exercitation ulliam corper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>
-			<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.</p> 
-			<p>Duis autem veleum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel willum lunombro dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim.</p> 
-		</section>
-		<!-- <aside class="column col-1">
-			<h2>Info</h2>
-			<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exercitation ulliam corper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>
-		</aside> -->
+			<?php 
+			$fn="pages/$pageId.php";
+			if(is_file($fn)){
+			include("pages/$pageId.php");
+			}
+			else{
+				echo "under construction";
+			} ?>	
 	</div>
 	<?php include('php/footer.php'); ?>
 </body>
