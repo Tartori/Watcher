@@ -13,7 +13,7 @@
 	function navigation($language, $pageId) {
 		$urlBase = $_SERVER['PHP_SELF'];
         add_param( $urlBase, "lang", $language);
-        $navigation=array("home", "products", "info", "contact");
+        $navigation=array("home", "products", "info", "contact", "registerForm");
         foreach($navigation as $nav){
 			$url = $urlBase;
 			add_param( $url, "id", $nav);
