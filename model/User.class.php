@@ -5,9 +5,10 @@ class User {
     private $lastname;
     private $addressLine;
     private $plz;
-    private $city ;
-    private $email ;
-    private $pw ;
+    private $city;
+    private $email;
+    private $pw;
+    private $activated;
 
     public function getId() {
 		return $this->id;
@@ -36,9 +37,12 @@ class User {
     public function getEmail() {
 		return $this->email;
     }
+    public function getActivated(){
+        return $this->activated;
+    }
 
     public function __toString(){
-		return sprintf("(%d) %s, %s, %s", $this->id, $this->getName(), $this->getAddress(), $this->getEmail());
+		return sprintf("%s, %s, %s", $this->getName(), $this->getAddress(), $this->getEmail());
     }
     
     public function setId($id){
@@ -65,5 +69,7 @@ class User {
     public function setPassword($pw){
         $this->pw=$pw;
     }
-
+    public function setActivated($activated){
+        $this->activated=$activated;
+    }
 }

@@ -1,5 +1,7 @@
 <?php
-    require("lib/helpers.php")
+	require("lib/helpers.php");
+	require_once 'autoloader.php';
+
 ?>
 <!DOCTYPE html>
 <html>
