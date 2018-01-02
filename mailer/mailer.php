@@ -10,7 +10,7 @@ abstract class Mailer{
     function __construct(){
         $this->mail = new PHPMailer;
         $this->mail->isSMTP();
-        $this->mail->SMTPDebug = 2;
+        $this->mail->SMTPDebug = 0;
         $this->mail->Host = 'smtp.gmail.com';
         $this->mail->Port = 587;
         $this->mail->SMTPSecure = 'tls';
@@ -21,7 +21,7 @@ abstract class Mailer{
 
     protected function send($subject = "", $body = "", $receiver = "", $recieverAlias = ""){
         echo "<br />Subject $subject <br />";
-        echo "<br />Body $body<br />";
+        echo "<br />Body ". htmlspecialchars($body) . "< br />";
         echo "<br />Reciever $receiver<br />";
         $this->mail->setFrom('watcher.shop@gmail.com', 'Watcher Shop');
         $this->mail->addReplyTo('watcher.shop@gmail.com', 'Watcher Shop');
