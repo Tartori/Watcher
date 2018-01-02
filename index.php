@@ -18,9 +18,9 @@
 		</nav>
 		<section class="column col-4">
 			<?php 
-			$fn="pages/$pageId.php";
+			$fn="view/$pageId.php";
 			if(is_file($fn)){
-			include("pages/$pageId.php");
+			include("view/$pageId.php");
 			}
 			else{
 				echo "under construction";
