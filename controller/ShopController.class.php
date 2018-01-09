@@ -29,7 +29,4 @@ class ShopController extends Controller{
     public function getItemDetailView(Request $request){
 
     }
-
-    public function 
-
 }
