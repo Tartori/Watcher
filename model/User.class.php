@@ -3,7 +3,7 @@ require_once '../autoloader.php';
 
 class User {
     private $id;
-    private $username
+    private $username;
     private $firstname;
     private $lastname;
     private $addressLine;
@@ -13,6 +13,7 @@ class User {
     private $pw;
     private $activated;
     private $activationHash;
+    private $salt;
 
     public function getId() {
 		return $this->id;
