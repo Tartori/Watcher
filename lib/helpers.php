@@ -1,5 +1,9 @@
 <?php
 
+function redirect($url, $statusCode = 303) {
+	header('Location: ' . $url, true, $statusCode);
+	die();
+}
 
 function get_param($name, $default) {
 	if (isset($_GET[$name]))

@@ -1,11 +1,10 @@
 <?php
-require_once '../autoloader.php';
+require_once 'autoloader.php';
 
 abstract class Controller {
 	protected $params;
 
 	public function __construct() {
-		$this->parse_params();
 	}
 
 	protected function flash($message){
@@ -20,28 +19,28 @@ abstract class Controller {
 		return [];
 	}
 
-	public function index() {
+	public function index(Request $request) {
 		return "Not implemented";
 	}
 
-	public function edit() {
+	public function edit(Request $request) {
 		return "Not implemented";
 	}
 
 	//NOTE new is a stupid keyword...
-	public function newly() {
+	public function newly(Request $request) {
 		return "Not implemented";
 	}
 
-	public function create() {
+	public function create(Request $request) {
 		return "Not implemented";
 	}
 
-	public function delete() {
+	public function delete(Request $request) {
 		return "Not implemented";
 	}
 
-	public function update() {
+	public function update(Request $request) {
 		return "Not implemented";
 	}
 

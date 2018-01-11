@@ -1,7 +1,10 @@
 <?php
-require_once '../autoloader.php';
+require_once 'autoloader.php';
 
-class ShopController extends Controller{
+class HomeController extends Controller{
+    public function doNotRequireLogin() {
+		return ["index", "Contact", "Login", "AddItemToShoppingCart", "GetItemDetailView", "GetShoppingCart"];
+	}
     public function index(Request $request){
 
     }
@@ -29,7 +32,5 @@ class ShopController extends Controller{
     public function getItemDetailView(Request $request){
 
     }
-
-    public function 
 
 }
