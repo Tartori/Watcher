@@ -3,6 +3,8 @@ require_once 'autoloader.php';
 
 abstract class Controller {
 	protected $params;
+	protected $data = [];
+	protected $title;
 
 	public function __construct() {
 	}
@@ -45,4 +47,11 @@ abstract class Controller {
 	}
 
 	
+    public function getData(){
+		return $this->data;
+    }
+
+    public function getTitle(){
+        return $this->title;
+    }
 }

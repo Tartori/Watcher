@@ -10,7 +10,7 @@ class HomeController extends Controller{
     }
 
     public function contact(Request $request){
-       
+       $this->title = "Contact";
     }
 
     public function login(Request $request){
@@ -32,4 +32,5 @@ class HomeController extends Controller{
     public function getItemDetailView(Request $request){
 
     }
+
 }

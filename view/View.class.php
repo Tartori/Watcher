@@ -1,0 +1,21 @@
+<?php
+
+class View {
+
+	private $controller;
+
+	public function __construct(Controller $controller) {
+		$this->controller = $controller;
+	}
+
+	public function render($tpl) {
+		$innerTpl = __DIR__ ."/$tpl.php";
+		foreach($this->controller->getData() as $key=>$value) {
+			$$key = $value;
+		}
+		$ct = $this->controller->getTitle();
+		$title = "Watcher" . ($ct ? " - ".$ct : "");
+
+		include  __DIR__ ."/main.php";
+	}
+}
