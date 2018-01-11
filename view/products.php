@@ -1,7 +1,7 @@
 <?php
 session_start();
-//require_once("dbcontroller.php");
-//$db_handle = new DBController();
+require_once("dbcontroller.php");
+$db_handle = new DBController();
 
 $produkte =array();
 
@@ -30,15 +30,14 @@ if(!empty($_GET["action"])) {
 switch($_GET["action"]) {
 	case "add":
 		if(!empty($_POST["quantity"])) {
-			//$productByCode = $db_handle->runQuery("SELECT * FROM tblproduct WHERE code='" . $_GET["code"] . "'");
-      $produkte = $_GET['code'];
+			$productByCode = $db_handle->runQuery("SELECT * FROM tblproduct WHERE code='" . $_GET["code"] . "'");
 
-      $itemArray = array($produkte[0]["code"]=>array('name'=>$produkte[0]["name"], 'code'=>$produkte[0]["code"], 'quantity'=>$_POST["quantity"], 'price'=>$produkte[0]["price"]));
+      $itemArray = array($productByCode[0]["code"]=>array('name'=>$productByCode[0]["name"], 'code'=>$productByCode[0]["code"], 'quantity'=>$_POST["quantity"], 'price'=>$productByCode[0]["price"]));
 
 			if(!empty($_SESSION["cart_item"])) {
-				if(in_array($produkte[0]["code"],array_keys($_SESSION["cart_item"]))) {
+				if(in_array($productByCode[0]["code"],array_keys($_SESSION["cart_item"]))) {
 					foreach($_SESSION["cart_item"] as $k => $v) {
-							if($produkte[0]["code"] == $k) {
+							if($productByCode[0]["code"] == $k) {
 								if(empty($_SESSION["cart_item"][$k]["quantity"])) {
 									$_SESSION["cart_item"][$k]["quantity"] = 0;
 								}
@@ -76,7 +75,7 @@ switch($_GET["action"]) {
 </HEAD>
 <BODY>
 <div id="shopping-cart">
-<div class="txt-heading">Shopping Cart <a id="btnEmpty" href="index.php?lang=de&id=products$action=empty">Empty Cart</a></div>
+<div class="txt-heading">Shopping Cart <a id="btnEmpty" href="index.php?lang=de&id=products&action=empty">Empty Cart</a></div>
 <?php
 if(isset($_SESSION["cart_item"])){
     $item_total = 0;
@@ -98,7 +97,7 @@ if(isset($_SESSION["cart_item"])){
         <td style="text-align:left;border-bottom:#F0F0F0 1px solid;"><?php echo $item["code"]; ?></td>
 				<td style="text-align:right;border-bottom:#F0F0F0 1px solid;"><?php echo $item["quantity"]; ?></td>
 				<td style="text-align:right;border-bottom:#F0F0F0 1px solid;"><?php echo "$".$item["price"]; ?></td>
-				<td style="text-align:center;border-bottom:#F0F0F0 1px solid;"><a href="index.php?lang=de&id=products$action=remove&code=<?php echo $item["code"]; ?>" class="btnRemoveAction">Remove Item</a></td>
+				<td style="text-align:center;border-bottom:#F0F0F0 1px solid;"><a href="index.php?lang=de&id=products&action=remove&code=<?php echo $item["code"]; ?>" class="btnRemoveAction">Remove Item</a></td>
 				</tr>
 				<?php
         $item_total += ($item["price"]*$item["quantity"]);
@@ -144,17 +143,16 @@ echo "<hr>";
 	<?php
 
 
-	$produkte = $db_handle->runQuery("SELECT * FROM tblproduct ORDER BY id ASC");
-	if (!empty($produkte)) {
-		foreach($produkte as $key=>$value){
-        echo "<p>". $_GET['code']. "</p></br>";
+	$product_array = $db_handle->runQuery("SELECT * FROM tblproduct ORDER BY id ASC");
+	if (!empty($product_array)) {
+		foreach($product_array as $key=>$value){
 	?>
 		<div class="product-item">
 
-			<form method="post" action="index.php?lang=de&id=products&action=add&code=<?php echo $produkte[$key]["code"]; ?>">
-			<div class="product-image"><img src="<?php echo  $verzeichnis . $produkte[$key]["img"]; ?>"></div>
-			<div><strong><?php echo $produkte[$key]["name"]; ?></strong></div>
-			<div class="product-price"><?php echo "CHF ".$produkte[$key]["price"]; ?></div>
+			<form method="post" action="index.php?lang=de&id=products&action=add&code=<?php echo $product_array[$key]["code"]; ?>">
+			<div class="product-image"><img src="<?php echo  $verzeichnis . $product_array[$key]["image"]; ?>"></div>
+			<div><strong><?php echo $product_array[$key]["name"]; ?></strong></div>
+			<div class="product-price"><?php echo "CHF ".$product_array[$key]["price"]; ?></div>
 			<div><input type="text" name="quantity" value="1" size="2" /><input type="submit" value="Add to cart" class="btnAddAction" /></div>
 			</form>
 		</div>
