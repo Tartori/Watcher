@@ -17,6 +17,13 @@ abstract class Mailer{
         $this->mail->SMTPAuth = true;
         $this->mail->Username = "watcher.shop@gmail.com";
         $this->mail->Password = "8-VFVRYsind8jsp6nrg-";
+        $this->mail->SMTPOptions = array(
+            'ssl' => array(
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+                'allow_self_signed' => true
+            )
+        );
     }
 
     protected function send($subject = "", $body = "", $receiver = "", $recieverAlias = ""){
