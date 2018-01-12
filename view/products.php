@@ -65,6 +65,24 @@ switch($_GET["action"]) {
 	case "empty":
 		unset($_SESSION["cart_item"]);
 	break;
+  case "decrease":
+  if(!empty($_SESSION["cart_item"])) {
+    foreach($_SESSION["cart_item"] as $k => $v) {
+        if($_GET["code"] == $k)
+        	$_SESSION["cart_item"][$k]["quantity"] -= 1;
+        if($_SESSION["cart_item"][$k]["quantity"] == 0)
+          unset($_SESSION["cart_item"]);
+    }
+  }
+  break;
+  case "increase":
+  if(!empty($_SESSION["cart_item"])) {
+    foreach($_SESSION["cart_item"] as $k => $v) {
+        if($_GET["code"] == $k)
+        	$_SESSION["cart_item"][$k]["quantity"] += 1;
+    }
+  }
+  break;
 }
 }
 ?>
@@ -75,7 +93,7 @@ switch($_GET["action"]) {
 </HEAD>
 <BODY>
 <div id="shopping-cart">
-<div class="txt-heading">Shopping Cart <a id="btnEmpty" href="index.php?lang=de&id=products&action=empty">Empty Cart</a></div>
+<div class="txt-heading">Shopping Cart <a code="btnEmpty" href="index.php?lang=de&id=products&action=empty">Empty Cart</a></div>
 <?php
 if(isset($_SESSION["cart_item"])){
     $item_total = 0;
@@ -84,7 +102,8 @@ if(isset($_SESSION["cart_item"])){
 <tbody>
 <tr>
 <th style="text-align:left;"><strong>Name</strong></th>
-<th style="text-align:left;"><strong>Code</strong></th>
+<th style="text-align:left;"><strong></strong></th>
+<th style="text-align:left;"><strong></strong></th>
 <th style="text-align:right;"><strong>Quantity</strong></th>
 <th style="text-align:right;"><strong>Price</strong></th>
 <th style="text-align:center;"><strong>Action</strong></th>
@@ -94,7 +113,8 @@ if(isset($_SESSION["cart_item"])){
 		?>
 				<tr>
 				<td style="text-align:left;border-bottom:#F0F0F0 1px solid;"><strong><?php echo $item["name"]; ?></strong></td>
-        <td style="text-align:left;border-bottom:#F0F0F0 1px solid;"><?php echo $item["code"]; ?></td>
+        <td style="text-align:left;border-bottom:#F0F0F0 1px solid;"><a href="index.php?lang=de&id=products&action=decrease&code=<?php echo $item["code"]; ?>" class="btnDecreaseAction">-1</a></td>
+        <td style="text-align:left;border-bottom:#F0F0F0 1px solid;"><a href="index.php?lang=de&id=products&action=increase&code=<?php echo $item["code"]; ?>" class="btnIncreaseAction">-1</a></td>
 				<td style="text-align:right;border-bottom:#F0F0F0 1px solid;"><?php echo $item["quantity"]; ?></td>
 				<td style="text-align:right;border-bottom:#F0F0F0 1px solid;"><?php echo "$".$item["price"]; ?></td>
 				<td style="text-align:center;border-bottom:#F0F0F0 1px solid;"><a href="index.php?lang=de&id=products&action=remove&code=<?php echo $item["code"]; ?>" class="btnRemoveAction">Remove Item</a></td>
