@@ -114,7 +114,7 @@ if(isset($_SESSION["cart_item"])){
 				<tr>
 				<td style="text-align:left;border-bottom:#F0F0F0 1px solid;"><strong><?php echo $item["name"]; ?></strong></td>
         <td style="text-align:left;border-bottom:#F0F0F0 1px solid;"><a href="index.php?lang=de&id=products&action=decrease&code=<?php echo $item["code"]; ?>" class="btnDecreaseAction">-1</a></td>
-        <td style="text-align:left;border-bottom:#F0F0F0 1px solid;"><a href="index.php?lang=de&id=products&action=increase&code=<?php echo $item["code"]; ?>" class="btnIncreaseAction">-1</a></td>
+        <td style="text-align:left;border-bottom:#F0F0F0 1px solid;"><a href="index.php?lang=de&id=products&action=increase&code=<?php echo $item["code"]; ?>" class="btnIncreaseAction">+1</a></td>
 				<td style="text-align:right;border-bottom:#F0F0F0 1px solid;"><?php echo $item["quantity"]; ?></td>
 				<td style="text-align:right;border-bottom:#F0F0F0 1px solid;"><?php echo "$".$item["price"]; ?></td>
 				<td style="text-align:center;border-bottom:#F0F0F0 1px solid;"><a href="index.php?lang=de&id=products&action=remove&code=<?php echo $item["code"]; ?>" class="btnRemoveAction">Remove Item</a></td>
