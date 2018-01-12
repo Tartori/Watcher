@@ -71,7 +71,7 @@ switch($_GET["action"]) {
         if($_GET["code"] == $k)
         	$_SESSION["cart_item"][$k]["quantity"] -= 1;
         if($_SESSION["cart_item"][$k]["quantity"] == 0)
-          unset($_SESSION["cart_item"]);
+          unset($_SESSION["cart_item"][$k]);
     }
   }
   break;
