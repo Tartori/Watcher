@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once("dbcontroller.php");
-$db_handle = new DBController();
+require_once 'autoloader.php';
+$db_handle = new DB();
 
 $produkte =array();
 
