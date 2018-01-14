@@ -18,7 +18,6 @@
         onchange="form.cemail.pattern = RegExp.escape(this.value);"/></p>
     <p>Confirm EMail: <input name="cemail" required/></p>
     <p>Password: <input type="password" name="pw" required 
-        pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$"
         onchange="form.cpw.pattern = RegExp.escape(this.value);"/></p>
     <p>Confirm Password: <input type="password" name="cpw" required/></p>
     <p><input type="submit" /></p>

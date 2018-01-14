@@ -14,14 +14,7 @@ $cemail = $_POST['cemail'];
 $pw = $_POST['pw'];
 $cpw = $_POST['cpw'];
 
-$user = new User();
-$user->setFirstname($firstname);
-$user->setLastname($lastname);
-$user->setAddressLine($address);
-$user->setPLZ($plz);
-$user->setCity($city);
-$user->setEmail($email);
-$user->setPassword($pw);
+$user = User::create($username, $firstname, $lastname, $address, $plz, $city, $email, $pw);
 
 
 echo($user->__toString());

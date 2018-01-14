@@ -14,6 +14,44 @@ class User {
     private $activated;
     private $activationHash;
     private $salt;
+    private $db;
+    
+    function __construct(){
+        $this->db = new DB();
+    }
+
+    static function create($username, $firstname, $lastname, $addressLine, $plz, $city, $email, $pw){
+        $instance = new self();
+        $instance->loadWithData($username, $firstname, $lastname, $addressLine, $plz, $city, $email, $pw);
+        return $instance;
+    }
+    
+    static function login($mail, $pw){
+        $instance = new self();
+        $instance->loadWithLogin($mail, $pw);
+        return $instance;
+    }
+
+
+
+    protected function loadWithLogin($mail, $pw){
+        
+    }
+
+    function loadWithData($username, $firstname, $lastname, $addressLine, $plz, $city, $email, $pw){
+        $this->setUsername($username);
+        $this->setFirstname($firstname);
+        $this->setLastname($lastname);
+        $this->setAddressLine($addressLine);
+        $this->setPlz($plz);
+        $this->setCity($city);
+        $this->setEmail($email);
+        $this->setPassword($pw);
+        $this->setActivationHash("");
+        $this->setSalt("");
+        $this->setActivated(true);
+        $this->saveToDb();
+    }
 
     public function getId() {
 		return $this->id;
@@ -45,8 +83,17 @@ class User {
     public function getEmail() {
 		return $this->email;
     }
+    public function getPassword(){
+        return $this->pw;
+    }
     public function getActivated(){
         return $this->activated;
+    }
+    public function getActivationHash(){
+        return $this->activationHash;
+    }
+    public function getSalt(){
+        return $this->salt;
     }
 
     public function __toString(){
@@ -56,31 +103,59 @@ class User {
     public function setId($id){
         $this->id=$id;
     }
-    public function setUsername($username){
-        $this->username=$username;
+    public function setUsername($un){
+        $username = $this->db->escapeString($un);
+        $this->username = $username;
     }
     public function setFirstname($firstname){
-        $this->firstname=$firstname;
+        $this->firstname=$this->db->escapeString($firstname);
     }
     public function setLastname($lastname){
-        $this->lastname=$lastname;
+        $this->lastname=$this->db->escapeString($lastname);
     }
     public function setAddressLine($addressLine){
-        $this->addressLine=$addressLine;
+        $this->addressLine=$this->db->escapeString($addressLine);
     }
     public function setPLZ($plz){
-        $this->plz=$plz;
+        $this->plz=$this->db->escapeString($plz);
     }
     public function setCity($city){
-        $this->city=$city;
+        $this->city=$this->db->escapeString($city);
     }
     public function setEmail($email){
-        $this->email=$email;
+        $this->email=$this->db->escapeString($email);
     }
     public function setPassword($pw){
-        $this->pw=$pw;
+        $this->pw=password_hash($this->db->escapeString($pw), PASSWORD_BCRYPT);
     }
     public function setActivated($activated){
-        $this->activated=$activated;
+        $this->activated=$this->db->escapeString($activated);
+    }
+    public function setActivationHash($hash){
+        $this->activationHash=$this->db->escapeString($hash);
+    }
+    public function setSalt($hash){
+        $this->salt=$this->db->escapeString($salt);
+    }
+
+    public function saveToDb(){
+        $query = "INSERT INTO `user`" .
+        "(`Username`, `Firstname`, `Lastname`, `AddressLine`, `PLZ`, `City`," .
+        " `Email`, `Password`, `Activated`, `ActivationHash`, `Salt`)".
+        " VALUES " .       
+        "('". $this->getUsername() ."', ".
+        " '". $this->getFirstname() ."',".
+        " '". $this->getLastname() ."',".
+        " '". $this->getAddressLine() ."',".
+        " '". $this->getPlz() ."',".
+        " '". $this->getCity() ."',".
+        " '". $this->getEmail() ."',".
+        " '". $this->getPassword() ."', ".
+        " ". "1" .",".
+        " '". $this->getActivationHash() ."',".
+        " '". $this->getSalt() ."');";
+        var_dump($query);
+        
+        $this->db->runStatement($query);
     }
 }
