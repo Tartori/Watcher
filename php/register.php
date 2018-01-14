@@ -3,6 +3,7 @@
 require_once '../mailer/registerMailer.php';
 require_once '../autoloader.php';
 
+$username = $_POST['username'];
 $firstname = $_POST['firstname'];
 $lastname = $_POST['lastname'];
 $address = $_POST['address'];

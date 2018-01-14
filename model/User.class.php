@@ -2,8 +2,9 @@
 require_once '../autoloader.php';
 
 class User {
-	private $id;
-	private $firstname;
+    private $id;
+    private $username;
+    private $firstname;
     private $lastname;
     private $addressLine;
     private $plz;
@@ -11,9 +12,14 @@ class User {
     private $email;
     private $pw;
     private $activated;
+    private $activationHash;
+    private $salt;
 
     public function getId() {
 		return $this->id;
+	}
+	public function getUsername() {
+		return $this->username;
 	}
 	public function getFirstname() {
 		return $this->firstname;
@@ -44,11 +50,14 @@ class User {
     }
 
     public function __toString(){
-		return sprintf("%s, %s, %s", $this->getName(), $this->getAddress(), $this->getEmail());
+		return sprintf("%s - %s, %s, %s", $this->getUsername(), $this->getName(), $this->getAddress(), $this->getEmail());
     }
     
     public function setId($id){
         $this->id=$id;
+    }
+    public function setUsername($username){
+        $this->username=$username;
     }
     public function setFirstname($firstname){
         $this->firstname=$firstname;
