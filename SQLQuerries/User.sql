@@ -7,7 +7,7 @@ CREATE TABLE `watcher`.`User` (
     `PLZ` INT DEFAULT NULL, 
     `City` VARCHAR(50) DEFAULT NULL, 
     `Email` VARCHAR(250) DEFAULT NULL, 
-    `Password` VARCHAR(50) NOT NULL, 
+    `Password` VARCHAR(255) NOT NULL, 
     `Activated` BOOLEAN NOT NULL DEFAULT 1, 
     `ActivationHash` VARCHAR(10), 
     `Salt` VARCHAR(10) NOT NULL,

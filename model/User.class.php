@@ -35,7 +35,18 @@ class User {
 
 
     protected function loadWithLogin($mail, $pw){
-        
+        $this->setEmail($mail);
+        $query = "select * from user where email='".$this->getEmail()."'";
+        $result = $this->db->runQuery($query);
+        if(password_verify($pw, $result[0]["Password"])){
+            $this->loadFromDbRow($result[0]);
+        } else{
+            throw new Exception("Invalid Password");
+        }
+    }
+
+    function loadFromDbRow($row){
+
     }
 
     function loadWithData($username, $firstname, $lastname, $addressLine, $plz, $city, $email, $pw){
