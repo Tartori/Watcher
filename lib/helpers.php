@@ -19,10 +19,10 @@ function add_param(&$url, $name, $value) {
 function navigation($language, $pageId) {
 	$urlBase = $_SERVER['PHP_SELF'];
 	add_param( $urlBase, "lang", $language);
-	$navigation=array("home", "products", "info", "contact", "registerForm");
+	$navigation=array("home", "products", "info", "contact", "register");
 	foreach($navigation as $nav){
 		$url = $urlBase;
-		add_param( $url, "id", $nav);
+		add_param( $url, "action", $nav);
 		$class = $pageId == $nav ? 'active' : 'inactive';
 		echo "<a class=\"$class\" href=\"$url\">$nav</a>";
 	}

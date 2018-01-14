@@ -12,7 +12,6 @@ class Request{
     }
 
     public function getParameter($name, $default) {
-        var_dump($this->parameters);
         if ($this->isParameter($name)) {
             return $this->parameters[$name];
         } else {

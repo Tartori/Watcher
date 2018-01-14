@@ -1,4 +1,8 @@
-
+<?php	
+	require_once "lib/helpers.php";
+	$language = get_param('lang', 'de');
+	$pageId = get_param('id', 0);
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,7 +21,7 @@
 		<section class="column col-4">
 			<?php 
 			if(is_file($innerTpl)){
-			include($innerTpl);
+				include($innerTpl);
 			}
 			else{
 				echo "under construction";
