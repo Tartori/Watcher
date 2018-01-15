@@ -8,7 +8,7 @@
 <head>
 	<meta charset="UTF-8" />
 	<link rel="stylesheet" type="text/css" href="Style\style.css" />
-	<title>Layout Example</title>
+	<title><?php echo $title ?></title>
 </head>
 <body>
 	<?php include('php/header.php'); ?>
