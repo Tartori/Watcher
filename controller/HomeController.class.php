@@ -10,11 +10,11 @@ class HomeController extends Controller{
     }
 
     public function products(Request $reqest){
-        
+
     }
-    
+
     public function info(Request $reqest){
-        
+
     }
 
     public function home(Request $request){
@@ -26,7 +26,7 @@ class HomeController extends Controller{
     }
 
     public function login(Request $request){
-       
+
     }
 
     public function dologin(Request $request){
@@ -34,11 +34,11 @@ class HomeController extends Controller{
             $email = $request->getParameter('email', '');
         if($request->isParameter('pw'))
             $pw = $request->getParameter('pw', '');
-        
+
         $user = User::login($email, $pw);
 
         echo($user->__toString());
-        
+
         $_SESSION["user"] = $user;
         $_SESSION["isLoggedIn"]=true;
 
@@ -49,7 +49,7 @@ class HomeController extends Controller{
 
         $_SESSION["user"] = null;
         $_SESSION["isLoggedIn"]=false;
-        
+
         return "Home";
     }
 
@@ -92,8 +92,8 @@ class HomeController extends Controller{
         }else {
             echo "mail sent sucessfully";
         }
-        
-        return "Home";        
+
+        return "Home";
     }
 
 }

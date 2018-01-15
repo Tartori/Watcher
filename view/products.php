@@ -169,7 +169,7 @@ echo "<hr>";
 	?>
 		<div class="product-item">
 
-			<form method="post" action="index.php?lang=de&id=products&action=add&code=<?php echo $product_array[$key]["code"]; ?>">
+			<form method="post" action="index.php?lang=de&id=products&action=addItemToShoppingCart&code=<?php echo $product_array[$key]["code"]; ?>">
 			<div class="product-image"><img src="<?php echo  $verzeichnis . $product_array[$key]["image"]; ?>"></div>
 			<div><strong><?php echo $product_array[$key]["name"]; ?></strong></div>
 			<div class="product-price"><?php echo "CHF ".$product_array[$key]["price"]; ?></div>
