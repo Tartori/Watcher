@@ -13,7 +13,6 @@ class User {
     private $pw;
     private $activated;
     private $activationHash;
-    private $salt;
     private $db;
     
     function __construct(){
@@ -41,12 +40,24 @@ class User {
         if(password_verify($pw, $result[0]["Password"])){
             $this->loadFromDbRow($result[0]);
         } else{
+            var_dump($result[0]);
+            var_dump($result[0]["Password"]);
+            
             throw new Exception("Invalid Password");
         }
     }
 
     function loadFromDbRow($row){
-
+        $this->setPasswordHash($row["Password"]);
+        $this->setUsername($row["Username"]);
+        $this->setFirstname($row["Firstname"]);
+        $this->setLastname($row["Lastname"]);
+        $this->setAddressLine($row["AddressLine"]);
+        $this->setPLZ($row["PLZ"]);
+        $this->setCity($row["City"]);
+        $this->setEmail($row["Email"]);
+        $this->setActivationHash($row["ActivationHash"]);
+        $this->setActivated($row["Activated"]==="1");
     }
 
     function loadWithData($username, $firstname, $lastname, $addressLine, $plz, $city, $email, $pw){
@@ -58,8 +69,7 @@ class User {
         $this->setCity($city);
         $this->setEmail($email);
         $this->setPassword($pw);
-        $this->setActivationHash("");
-        $this->setSalt("");
+        $this->setActivationHash(sha1(mt_rand(10000,99999).time().$email)."This is how we do it");
         $this->setActivated(true);
         $this->saveToDb();
     }
@@ -103,9 +113,6 @@ class User {
     public function getActivationHash(){
         return $this->activationHash;
     }
-    public function getSalt(){
-        return $this->salt;
-    }
 
     public function __toString(){
 		return sprintf("%s - %s, %s, %s", $this->getUsername(), $this->getName(), $this->getAddress(), $this->getEmail());
@@ -137,16 +144,16 @@ class User {
         $this->email=$this->db->escapeString($email);
     }
     public function setPassword($pw){
-        $this->pw=password_hash($this->db->escapeString($pw), PASSWORD_BCRYPT);
+        $this->setPasswordHash(password_hash($pw, PASSWORD_BCRYPT));
+    }
+    private function setPasswordHash($pw){
+        $this->pw=$pw;
     }
     public function setActivated($activated){
         $this->activated=$this->db->escapeString($activated);
     }
     public function setActivationHash($hash){
         $this->activationHash=$this->db->escapeString($hash);
-    }
-    public function setSalt($hash){
-        $this->salt=$this->db->escapeString($salt);
     }
 
     public function saveToDb(){
@@ -164,7 +171,7 @@ class User {
         " '". $this->getPassword() ."', ".
         " ". "1" .",".
         " '". $this->getActivationHash() ."',".
-        " '". $this->getSalt() ."');";
+        " '');";
         var_dump($query);
         
         $this->db->runStatement($query);

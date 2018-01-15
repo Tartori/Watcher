@@ -1,9 +1,9 @@
 What|Who|Prio|State
 Admin Page|Julian|High|Ongoing
-DB Connection|Julian|High|Ongoing
-Products View |Alp|High|Ongoing
-Shopping Cart|Alp|High|Ongoing
-Order Checkout| |High|Waiting
+DB Connection|Julian|High|Done
+Products View |Alp|High|Done
+Shopping Cart|Alp|High|Done
+Order Checkout|Alp|High|Waiting
 Rework Design|Alp|Medium|Waiting
 User Activation Link|Julian|Medium|Waiting
 SSH| |Medium|Waiting
