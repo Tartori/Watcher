@@ -2,6 +2,7 @@
 require_once 'autoloader.php';
 
 class HomeController extends Controller{
+    
     public function doNotRequireLogin() {
 		return ["index", "Contact", "Login", "AddItemToShoppingCart", "GetItemDetailView", "GetShoppingCart"];
 	}
@@ -23,6 +24,7 @@ class HomeController extends Controller{
 
     public function contact(Request $request){
        $this->title = "Contact";
+       $this->message = "Super Fancy Message";
     }
 
     public function login(Request $request){
@@ -80,6 +82,10 @@ class HomeController extends Controller{
         $pw = $_POST['pw'];
         $cpw = $_POST['cpw'];
 
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $this->message = "Invalid Email";
+            return "Register";
+        }
         $user = User::create($username, $firstname, $lastname, $address, $plz, $city, $email, $pw);
 
 

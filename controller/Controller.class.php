@@ -5,6 +5,7 @@ abstract class Controller {
 	protected $params;
 	protected $data = [];
 	protected $title;
+	protected $message;
 
 	public function __construct() {
 	}
@@ -46,7 +47,10 @@ abstract class Controller {
 		return "Not implemented";
 	}
 
-	
+	public function getMessage(){
+		return $this->message;
+	}
+
     public function getData(){
 		return $this->data;
     }

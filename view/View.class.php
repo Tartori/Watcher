@@ -13,6 +13,7 @@ class View {
 		foreach($this->controller->getData() as $key=>$value) {
 			$$key = $value;
 		}
+		$message = $this->controller->getMessage();
 		$ct = $this->controller->getTitle();
 		$title = "Watcher" . ($ct ? " - ".$ct : "");
 

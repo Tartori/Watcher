@@ -19,7 +19,10 @@
 			<div><?php languages($language, $pageId); ?></div>
 		</nav>
 		<section class="column col-4">
-			<?php 
+			<?php
+			if(isset($message)&&$message!==""){
+				echo "<h2>$message</h2>";
+			}
 			if(is_file($innerTpl)){
 				include($innerTpl);
 			}
