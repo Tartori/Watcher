@@ -36,9 +36,12 @@ class HomeController extends Controller{
             $email = $request->getParameter('email', '');
         if($request->isParameter('pw'))
             $pw = $request->getParameter('pw', '');
-        
-        $user = User::login($email, $pw);
-
+        try{
+            $user = User::login($email, $pw);
+        }catch (Exception $ex){
+            $this->message = $ex->getMessage();
+            return "Login";
+        }
         echo($user->__toString());
         
         $_SESSION["user"] = $user;
