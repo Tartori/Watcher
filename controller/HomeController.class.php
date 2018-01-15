@@ -9,6 +9,18 @@ class HomeController extends Controller{
 
     }
 
+    public function products(Request $reqest){
+        
+    }
+    
+    public function info(Request $reqest){
+        
+    }
+
+    public function home(Request $request){
+
+    }
+
     public function contact(Request $request){
        $this->title = "Contact";
     }
@@ -27,11 +39,18 @@ class HomeController extends Controller{
 
         echo($user->__toString());
         
+        $_SESSION["user"] = $user;
+        $_SESSION["isLoggedIn"]=true;
+
         return "Home";
     }
 
     public function logout(Request $request){
 
+        $_SESSION["user"] = null;
+        $_SESSION["isLoggedIn"]=false;
+        
+        return "Home";
     }
 
     public function addItemToShoppingCart(Request $request){

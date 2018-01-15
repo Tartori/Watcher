@@ -1,5 +1,5 @@
 <?php
-session_start();
+
 require_once 'autoloader.php';
 $db_handle = new DB();
 

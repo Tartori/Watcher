@@ -1,4 +1,5 @@
 <?php
+	session_start();
 	require_once "lib/helpers.php";
 	require_once 'autoloader.php';
 	$request = new Request();
