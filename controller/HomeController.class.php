@@ -73,6 +73,20 @@ class HomeController extends Controller{
 
     }
 
+    public function activate(Request $request){
+        if(!$request->isParameter("code"))
+            return "Home";
+        $code = $request->getParameter("code", "");
+        try{
+            User::activate($code);
+        }catch(Exception $ex){
+            $this->message = "Invalid Activation Code";
+            return "Home";
+        }
+        $this->message = "Activated successfully";
+        return "Home";
+    }
+
     public function doregister(Request $request){
         $errMsg = "";
         $firstname = $_POST['firstname'];
@@ -116,12 +130,16 @@ class HomeController extends Controller{
             $this->message = $errMsg;
             return "register";
         }
-        $user = User::create($firstname, $lastname, $address, $plz, $city, $email, $pw);
-
+        try{
+            $user = User::create($firstname, $lastname, $address, $plz, $city, $email, $pw);
+        }catch(Exception $ex){
+            $this->message = $ex->getMessage();
+            return "register";
+        }
 
         echo($user->__toString());
 
-        $mailer = new RegisterMailer("julianstampfli4@gmail.com", $user->__toString());
+        $mailer = new RegisterMailer($user);
 
         if(!$mailer->sendMail()){
             echo "Mailer Error: " . $mailer->getExceptionDetails();
