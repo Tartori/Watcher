@@ -15,13 +15,6 @@ abstract class Controller {
 		array_push($_SESSION['flash'], $message);
 	}
 
-	/**
-	 * @return array of methods that do not require login
-	 */
-	public function doNotRequireLogin() {
-		return [];
-	}
-
 	public function index(Request $request) {
 		return "Not implemented";
 	}

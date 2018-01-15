@@ -3,9 +3,6 @@ require_once 'autoloader.php';
 
 class HomeController extends Controller{
     
-    public function doNotRequireLogin() {
-		return ["index", "Contact", "Login", "AddItemToShoppingCart", "GetItemDetailView", "GetShoppingCart"];
-	}
     public function index(Request $request){
 
     }
@@ -41,10 +38,9 @@ class HomeController extends Controller{
         }catch (Exception $ex){
             $this->message = $ex->getMessage();
             return "Login";
-        }
-        echo($user->__toString());
-        
+        }        
         $_SESSION["user"] = $user;
+        $_SESSION["isAdmin"]=$user->getIsAdmin();
         $_SESSION["isLoggedIn"]=true;
 
         $this->message = "$email sucessfully logged in.";
@@ -55,6 +51,7 @@ class HomeController extends Controller{
     public function logout(Request $request){
 
         $_SESSION["user"] = null;
+        $_SESSION["isAdmin"]=false;
         $_SESSION["isLoggedIn"]=false;
         
         $this->message = "You sucessfully logged out.";

@@ -1,5 +1,9 @@
 <?php
 
+$language = get_param('lang', 'de');
+$action = get_param('action', "home");
+
+
 function redirect($url, $statusCode = 303) {
 	header('Location: ' . $url, true, $statusCode);
 	die();
@@ -19,12 +23,32 @@ function add_param(&$url, $name, $value) {
 function navigation($language, $pageId) {
 	$urlBase = $_SERVER['PHP_SELF'];
 	add_param( $urlBase, "lang", $language);
-	$navigation=array("home", "products", "info", "contact", "register", "login");
+	$navigation = simplexml_load_file(__DIR__."/../xml/navigation.xml");
+	$isLoggedIn = false;
+	$isAdmin = false;
+	if(array_key_exists("isAdmin", $_SESSION)){
+		$isAdmin=$_SESSION["isAdmin"];
+	}
+	if(array_key_exists("isLoggedIn", $_SESSION)){
+		$isLoggedIn=$_SESSION["isLoggedIn"];
+	}
+	$action = get_param('action', "home");
+	
 	foreach($navigation as $nav){
+		if($nav["requiredState"]=="login" && !$isLoggedIn){
+			continue;
+		}
+		if($nav["requiredState"]=="logout" && $isLoggedIn){
+			continue;
+		}
+		if($nav["requiredState"]=="admin" && !$isAdmin){
+			continue;
+		}
 		$url = $urlBase;
-		add_param( $url, "action", $nav);
-		$class = $pageId == $nav ? 'active' : 'inactive';
-		echo "<a class=\"$class\" href=\"$url\">$nav</a>";
+		add_param( $url, "action", $nav["actionCall"]);
+		add_param( $url, "controller", $nav["controller"]);
+		$class = $action == $nav["actionCall"] ? 'active' : 'inactive';
+		echo "<a class=\"$class\" href=\"$url\">".$nav["actionCall"]."</a>";
 	}
 }
 
@@ -55,8 +79,6 @@ function t($key) {
 	}
 }
 
-$language = get_param('lang', 'de');
-$pageId = get_param('id', 0);
 $texts=array();
 
 $file=file("messages/messages_$language.txt");
