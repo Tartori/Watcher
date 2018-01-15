@@ -6,6 +6,7 @@ spl_autoload_register(function($class_name){
 		'lib/',
 		'controller/',
 		'model/',
+		'mailer/',
 		'view/'
 	];
 	

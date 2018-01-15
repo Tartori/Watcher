@@ -2,7 +2,7 @@
 
 use PHPMailer\PHPMailer\PHPMailer;
 
-require '../vendor/autoload.php';
+require 'vendor/autoload.php';
 
 abstract class Mailer{
     private $mail;

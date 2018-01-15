@@ -14,7 +14,20 @@ class HomeController extends Controller{
     }
 
     public function login(Request $request){
+       
+    }
 
+    public function dologin(Request $request){
+        if($request->isParameter('email'))
+            $email = $request->getParameter('email', '');
+        if($request->isParameter('pw'))
+            $pw = $request->getParameter('pw', '');
+        
+        $user = User::login($email, $pw);
+
+        echo($user->__toString());
+        
+        return "Home";
     }
 
     public function logout(Request $request){
@@ -34,6 +47,34 @@ class HomeController extends Controller{
     }
     public function register(Request $request){
 
+    }
+
+    public function doregister(Request $request){
+        $username = $_POST['username'];
+        $firstname = $_POST['firstname'];
+        $lastname = $_POST['lastname'];
+        $address = $_POST['address'];
+        $plz = $_POST['plz'];
+        $city = $_POST['city'];
+        $email = $_POST['email'];
+        $cemail = $_POST['cemail'];
+        $pw = $_POST['pw'];
+        $cpw = $_POST['cpw'];
+
+        $user = User::create($username, $firstname, $lastname, $address, $plz, $city, $email, $pw);
+
+
+        echo($user->__toString());
+
+        $mailer = new RegisterMailer("julianstampfli4@gmail.com", $user->__toString());
+
+        if(!$mailer->sendMail()){
+            echo "Mailer Error: " . $mailer->getExceptionDetails();
+        }else {
+            echo "mail sent sucessfully";
+        }
+        
+        return "Home";        
     }
 
 }

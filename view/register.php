@@ -6,7 +6,7 @@
 
 <h1> Please enter your information </h1>
 
-<form action="php/register.php" method="post">
+<form action="index.php?action=doregister" method="post">
     <p>User Name: <input name="username" required/></p>   
     <p>First Name: <input name="firstname" required/></p>
     <p>Last Name: <input name="lastname" required/></p>
