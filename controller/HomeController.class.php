@@ -44,6 +44,8 @@ class HomeController extends Controller{
         $_SESSION["user"] = $user;
         $_SESSION["isLoggedIn"]=true;
 
+        $this->message = "$email sucessfully logged in.";
+
         return "Home";
     }
 
@@ -52,6 +54,7 @@ class HomeController extends Controller{
         $_SESSION["user"] = null;
         $_SESSION["isLoggedIn"]=false;
         
+        $this->message = "You sucessfully logged out.";
         return "Home";
     }
 
@@ -71,7 +74,7 @@ class HomeController extends Controller{
     }
 
     public function doregister(Request $request){
-        $username = $_POST['username'];
+        $errMsg = "";
         $firstname = $_POST['firstname'];
         $lastname = $_POST['lastname'];
         $address = $_POST['address'];
@@ -81,12 +84,39 @@ class HomeController extends Controller{
         $cemail = $_POST['cemail'];
         $pw = $_POST['pw'];
         $cpw = $_POST['cpw'];
-
+        
+        if(!preg_match("/^[a-zA-Z äöüÄÖÜ]+$/", $firstname)){
+            $errMsg.="Invalid Firstname<br/>";
+        } 
+        if(!preg_match("/^[a-zA-Z äöüÄÖÜ]+$/", $lastname)){
+            $errMsg.="Invalid Lastname<br/>";
+        } 
+        if(!preg_match("/^[a-zA-Z äöüÄÖÜ]+ [\w]+$/", $address)){
+            $errMsg.="Invalid Address<br/>";
+        } 
+        if(!preg_match("/^[\d]{4}$/", $plz)){
+            $errMsg.="Invalid PLZ<br/>";
+        } 
+        if(!preg_match("/^[\w äöüÄÖÜ]+$/", $city)){
+            $errMsg.="Invalid City<br/>";
+        } 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $this->message = "Invalid Email";
-            return "Register";
+            $errMsg.= "Invalid Email<br/>";
         }
-        $user = User::create($username, $firstname, $lastname, $address, $plz, $city, $email, $pw);
+        if($email!==$cemail){
+            $errMsg.="Invalid confirmEmail<br/>";
+        } 
+        if(!preg_match("/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d$@$!%*#?&]{8,}$/", $pw)){
+            $errMsg.="Invalid Password<br/>";
+        } 
+        if($pw!==$cpw){
+            $errMsg.="Invalid confirmPassword<br/>";
+        } 
+        if($errMsg!==""){
+            $this->message = $errMsg;
+            return "register";
+        }
+        $user = User::create($firstname, $lastname, $address, $plz, $city, $email, $pw);
 
 
         echo($user->__toString());

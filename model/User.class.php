@@ -3,7 +3,6 @@ require_once 'autoloader.php';
 
 class User {
     private $id;
-    private $username;
     private $firstname;
     private $lastname;
     private $addressLine;
@@ -13,21 +12,28 @@ class User {
     private $pw;
     private $activated;
     private $activationHash;
+    private $isAdmin;
     private $db;
     
     function __construct(){
         $this->db = new DB();
     }
 
-    static function create($username, $firstname, $lastname, $addressLine, $plz, $city, $email, $pw){
+    static function create($firstname, $lastname, $addressLine, $plz, $city, $email, $pw){
         $instance = new self();
-        $instance->loadWithData($username, $firstname, $lastname, $addressLine, $plz, $city, $email, $pw);
+        $instance->loadWithData($firstname, $lastname, $addressLine, $plz, $city, $email, $pw);
         return $instance;
     }
     
     static function login($mail, $pw){
         $instance = new self();
         $instance->loadWithLogin($mail, $pw);
+        return $instance;
+    }
+
+    static function fromDbRow($row){
+        $instance = new self();
+        $instance->loadFromDbRow($row);
         return $instance;
     }
 
@@ -49,7 +55,6 @@ class User {
 
     function loadFromDbRow($row){
         $this->setPasswordHash($row["Password"]);
-        $this->setUsername($row["Username"]);
         $this->setFirstname($row["Firstname"]);
         $this->setLastname($row["Lastname"]);
         $this->setAddressLine($row["AddressLine"]);
@@ -58,10 +63,10 @@ class User {
         $this->setEmail($row["Email"]);
         $this->setActivationHash($row["ActivationHash"]);
         $this->setActivated($row["Activated"]==="1");
+        $this->setIsAdmin($row["IsAdmin"]==="1");
     }
 
-    function loadWithData($username, $firstname, $lastname, $addressLine, $plz, $city, $email, $pw){
-        $this->setUsername($username);
+    function loadWithData($firstname, $lastname, $addressLine, $plz, $city, $email, $pw){
         $this->setFirstname($firstname);
         $this->setLastname($lastname);
         $this->setAddressLine($addressLine);
@@ -69,16 +74,14 @@ class User {
         $this->setCity($city);
         $this->setEmail($email);
         $this->setPassword($pw);
-        $this->setActivationHash(sha1(mt_rand(10000,99999).time().$email)."This is how we do it");
+        $this->setActivationHash(sha1(mt_rand(10000,99999).time().$email));
         $this->setActivated(true);
+        $this->setIsAdmin(false);
         $this->saveToDb();
     }
 
     public function getId() {
 		return $this->id;
-	}
-	public function getUsername() {
-		return $this->username;
 	}
 	public function getFirstname() {
 		return $this->firstname;
@@ -113,17 +116,16 @@ class User {
     public function getActivationHash(){
         return $this->activationHash;
     }
+    public function getIsAdmin(){
+        return $this->isAdmin;
+    }
 
     public function __toString(){
-		return sprintf("%s - %s, %s, %s", $this->getUsername(), $this->getName(), $this->getAddress(), $this->getEmail());
+		return sprintf("%s, %s, %s", $this->getName(), $this->getAddress(), $this->getEmail());
     }
     
     public function setId($id){
         $this->id=$id;
-    }
-    public function setUsername($un){
-        $username = $this->db->escapeString($un);
-        $this->username = $username;
     }
     public function setFirstname($firstname){
         $this->firstname=$this->db->escapeString($firstname);
@@ -150,28 +152,52 @@ class User {
         $this->pw=$pw;
     }
     public function setActivated($activated){
-        $this->activated=$this->db->escapeString($activated);
+        $this->activated=$activated===true;
     }
     public function setActivationHash($hash){
         $this->activationHash=$this->db->escapeString($hash);
     }
+    public function setIsAdmin($isAdmin){
+        $this->isAdmin=$isAdmin===true;
+    }
+    
+    function getAllUser(){
+        $query = "select * from user;";
+        $result = $this->db->runQuery($query);
+        $users = new array();
+        foreach($result as $row){
+            $users[]=User::fromDbRow($row);
+        }
+
+    }
 
     public function saveToDb(){
         $query = "INSERT INTO `user`" .
-        "(`Username`, `Firstname`, `Lastname`, `AddressLine`, `PLZ`, `City`," .
-        " `Email`, `Password`, `Activated`, `ActivationHash`, `Salt`)".
+        "(`Firstname`, `Lastname`, `AddressLine`, `PLZ`, `City`," .
+        " `Email`, `Password`, `Activated`, `ActivationHash`, `IsAdmin`)".
         " VALUES " .       
-        "('". $this->getUsername() ."', ".
-        " '". $this->getFirstname() ."',".
+        "('". $this->getFirstname() ."',".
         " '". $this->getLastname() ."',".
         " '". $this->getAddressLine() ."',".
         " '". $this->getPlz() ."',".
         " '". $this->getCity() ."',".
         " '". $this->getEmail() ."',".
         " '". $this->getPassword() ."', ".
-        " ". "1" .",".
-        " '". $this->getActivationHash() ."',".
-        " '');";
+        " ";
+        if($this->activated===true){
+            $query.="1";
+        }else {
+            $query.="0";
+        }
+        $query.=",".
+        " '". $this->getActivationHash() ."',";
+        if($this->isAdmin===true){
+            $query.="1";
+        }else {
+            $query.="0";
+        }
+        
+        $query.=");";
         var_dump($query);
         
         $this->db->runStatement($query);

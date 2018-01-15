@@ -1,6 +1,5 @@
-CREATE TABLE `watcher`.`User` ( 
-    `ID` INT NOT NULL AUTO_INCREMENT , 
-    `Username` VARCHAR(50) NOT NULL , 
+CREATE TABLE `blog_samples`.`User` ( 
+    `ID` INT NOT NULL AUTO_INCREMENT ,
     `Firstname` VARCHAR(50) NOT NULL , 
     `Lastname` VARCHAR(50) NOT NULL , 
     `AddressLine` VARCHAR(100) DEFAULT NULL, 
@@ -9,8 +8,8 @@ CREATE TABLE `watcher`.`User` (
     `Email` VARCHAR(250) DEFAULT NULL, 
     `Password` VARCHAR(255) NOT NULL, 
     `Activated` BOOLEAN NOT NULL DEFAULT 1, 
-    `ActivationHash` VARCHAR(10), 
-    `Salt` VARCHAR(10) NOT NULL,
+    `ActivationHash` VARCHAR(10),
+    `IsAdmin` BOOLEAN NOT NULL DEFAULT 0,
     `CreationDate` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`ID`)) 
     ENGINE = InnoDB 
