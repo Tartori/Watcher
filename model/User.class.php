@@ -22,7 +22,7 @@ class User {
     static function create($firstname, $lastname, $addressLine, $plz, $city, $email, $pw){
         $instance = new self();
         $users = $instance->allUser();
-        if(is_array($user)){
+        if(is_array($users)){
             foreach($users as $user){
                 if($user->getEmail()==$email){
                     throw new Exception("Email already exists.");
@@ -78,7 +78,7 @@ class User {
         $query = "select * from user where ActivationHash=?";
         $result = $this->db->getDBResult($query, array(array(
             "param_type" => "s",
-            "param_value" => $this->getEmail()
+            "param_value" => $code
         )));
         if(is_null($result)){
             throw new Exception("Invalid or already used Activation Hash");
@@ -104,6 +104,9 @@ class User {
         } else{            
             throw new Exception("Invalid Password or Email");
         }
+        if($this->getActivated()!=true){
+            throw new Exception("User not yet Activated");
+        }
     }
 
     function loadFromDbRow($row){
@@ -116,8 +119,8 @@ class User {
         $this->setCity($row["City"]);
         $this->setEmail($row["Email"]);
         $this->setActivationHash($row["ActivationHash"]);
-        $this->setActivated($row["Activated"]==="1");
-        $this->setIsAdmin($row["IsAdmin"]==="1");
+        $this->setActivated($row["Activated"]==1);
+        $this->setIsAdmin($row["IsAdmin"]==1);
     }
 
     function loadWithData($firstname, $lastname, $addressLine, $plz, $city, $email, $pw){
@@ -219,8 +222,10 @@ class User {
         $query = "select * from user;";
         $result = $this->db->getDBResult($query);
         $users = array();
-        foreach($result as $row){
-            $users[]=User::fromDbRow($row);
+        if(is_array($result)){
+            foreach($result as $row){
+                $users[]=User::fromDbRow($row);
+            }
         }
         return $users;
     }

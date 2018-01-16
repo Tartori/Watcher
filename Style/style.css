@@ -101,10 +101,10 @@ section p {
 }
 
 
-/*form  { display: table;      }
+form  { display: table;      }
 p     { display: table-row;  }
 label { display: table-cell; }
-input { display: table-cell; }*/
+input { display: table-cell; }
 
 /*--- Checkout Style ---*/
 

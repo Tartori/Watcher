@@ -274,8 +274,6 @@ class HomeController extends Controller{
             return "register";
         }
 
-        echo($user->__toString());
-
         $mailer = new RegisterMailer($user);
 
         if(!$mailer->sendMail()){

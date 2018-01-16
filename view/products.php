@@ -1,8 +1,9 @@
 <?php
-require_once "model/ShoppingCart.class.php";
 
-$member_id = $_SESSION["user"];
-
+$member_id = 0;
+if((array_key_exists("user", $_SESSION)&&!is_null($_SESSION["user"]))){    
+    $member_id = $_SESSION["user"];
+}
 $shoppingCart = new ShoppingCart();
 if (! empty($_GET["action"])) {
     switch ($_GET["action"]) {
