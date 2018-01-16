@@ -4,9 +4,7 @@ Rework Design|Alp|Medium|Waiting
 SSH| |Medium|Waiting
 Site auf Webserver bringen|Julian|High|Waiting
 Localisation in DB| |Medium|Waiting
-DB Automatisch erstellen wenn nicht erstellt|Julian|Low|Waiting
 Daten auffüllen (Header, Footer, Info, ...)| |Medium|Waiting
-Kontaktformular| |Medium|Waiting
 
 User Login mit Session Handling|Julian|High|Done
 DB Connection|Julian|High|Done

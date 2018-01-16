@@ -58,6 +58,25 @@ class Product{
         }
         return $products;
     }
+
+    static function getById($id){
+        $instance = new self();
+        $instance->loadById($id);
+        return $instance;
+    }
+
+    protected function loadById($id){
+        $query = "select * from tbl_product where ID=?";
+        $result = $this->db->getDBResult($query, array(array(
+            "param_type" => "s",
+            "param_value" => $id
+        )));
+        
+        if(is_null($result)){
+            throw new Exception("Unknown Product");
+        }
+        $this->loadFromDbRow($result[0]);
+    }
     
     static function fromDbRow($row){
         $instance = new self();
@@ -87,6 +106,16 @@ class Product{
         $this->saveToDb();
     }
 
+    function delete(){
+        $query="DELETE FROM `tbl_product` WHERE ID = ?";
+            $params[]=  array(
+                "param_type" => "s",
+                "param_value" => $this->getId()
+            );
+
+        $this->db->updateDB($query, $params);
+    }
+
     function saveToDb(){
         $query = "";
         $params = array(
@@ -114,7 +143,7 @@ class Product{
             $this->db->updateDB($query, $params);
         }
         else{
-            $query = "INSERT INTO `user`" .
+            $query = "INSERT INTO `tbl_product`" .
             "(`name`, `code`, `image`, `price`)".
             " VALUES (?, ?, ?, ?)";
             $id= $this->db->insertDB($query, $params);
