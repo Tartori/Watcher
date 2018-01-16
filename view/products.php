@@ -1,7 +1,7 @@
 <?php
 require_once "model/ShoppingCart.class.php";
 
-$member_id = 2; // you can your integerate authentication module here to get logged in member
+$member_id = $_SESSION["user"];
 
 $shoppingCart = new ShoppingCart();
 if (! empty($_GET["action"])) {
@@ -59,8 +59,8 @@ if (! empty($cartItem)) {
         <div class="txt-heading">
             <div class="txt-heading-label">Shopping Cart</div>
 
-            <a id="btnEmpty" href="index.php?action=empty"><img
-                src="image/empty-cart.png" alt="empty-cart"
+            <a id="btnEmpty" href="index.php?action=emptyItemToShoppingCart"><img
+                src="img/image/empty-cart.png" alt="empty-cart"
                 title="Empty Cart" class="float-right" /></a>
             <div class="cart-status">
                 <div>Total Quantity: <?php echo $item_quantity; ?></div>
@@ -74,7 +74,7 @@ if (! empty($cartItem)) {
             require_once ("cart-list.php");
             ?>
             <div class="align-right">
-            <a href="view/process-checkout.php"><button class="btn-action" name="check_out">Go To Checkout</button></a>
+            <a href="index.php?action=checkout"><button class="btn-action" name="check_out">Go To Checkout</button></a>
             </div>
 <?php
         } // End if !empty $cartItem

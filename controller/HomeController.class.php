@@ -68,33 +68,87 @@ class HomeController extends Controller{
         return "Home";
     }
 
+    public function processOrder(Request $requst){
+        if(!(array_key_exists("user", $_SESSION)&&!is_null($_SESSION["user"]))){
+            $this->message = "You need to be logged in to use the shopping cart";
+            return "login";
+        }
+        $member_id = $_SESSION["user"];
+        $user = User::getById($_SESSION["user"]);
+
+        $shoppingCart = new ShoppingCart();
+
+        /* Calculate Cart Total Items */
+        $cartItem = $shoppingCart->getMemberCartItem($member_id);
+        $item_quantity = 0;
+        $item_price = 0;
+        if (! empty($cartItem)) {
+            if (! empty($cartItem)) {
+                foreach ($cartItem as $item) {
+                    $item_quantity = $item_quantity + $item["quantity"];
+                    $item_price = $item_price + ($item["price"] * $item["quantity"]);
+                }
+            }
+        }
+
+        $order = 0;
+        $order = $shoppingCart->insertOrder ( $user, $item_price);
+        if(!empty($order)) {
+            if (! empty($cartItem)) {
+                if (! empty($cartItem)) {
+                    foreach ($cartItem as $item) {
+                        $shoppingCart->insertOrderItem ( $order, $item["id"], $item["price"], $item["quantity"]);
+                    }
+                }
+            }
+        }
+        $mailer = new OrderMailer($user->getEmail(), $order, $item_price);
+        $mailer->sendMail();
+        $shoppingCart->emptyCart($member_id);
+        $this->message = "your order will be processed soon.";
+        return "home";
+    }
+
+    public function checkout(Request $request){
+        $this->data = User::getById($_SESSION["user"]);
+        $this->title = "Checkout";
+    }
+
     public function addItemToShoppingCart(Request $request){
-      $member_id = 2;
-      $shoppingCart = new ShoppingCart();
-      if (! empty($_POST["quantity"])) {
+        if(!(array_key_exists("user", $_SESSION)&&!is_null($_SESSION["user"]))){
+            $this->message = "You need to be logged in to use the shopping cart";
+            return "login";
+        }
+        $member_id = $_SESSION["user"];
+        $shoppingCart = new ShoppingCart();
+        if (! empty($_POST["quantity"])) {
 
-          $productResult = $shoppingCart->getProductByCode($_GET["code"]);
+            $productResult = $shoppingCart->getProductByCode($_GET["code"]);
 
-          $cartResult = $shoppingCart->getCartItemByProduct($productResult[0]["id"], $member_id);
+            $cartResult = $shoppingCart->getCartItemByProduct($productResult[0]["id"], $member_id);
 
-          if (! empty($cartResult)) {
-              // Update cart item quantity in database
-              $newQuantity = $cartResult[0]["quantity"] + $_POST["quantity"];
-              $shoppingCart->updateCartQuantity($newQuantity, $cartResult[0]["id"]);
-          } else {
-              // Add to cart table
-              $shoppingCart->addToCart($productResult[0]["id"], $_POST["quantity"], $member_id);
-          }
-      }
-      return "products";
+            if (! empty($cartResult)) {
+                // Update cart item quantity in database
+                $newQuantity = $cartResult[0]["quantity"] + $_POST["quantity"];
+                $shoppingCart->updateCartQuantity($newQuantity, $cartResult[0]["id"]);
+            } else {
+                // Add to cart table
+                $shoppingCart->addToCart($productResult[0]["id"], $_POST["quantity"], $member_id);
+            }
+        }
+        return "products";
     }
 
     public function removeItemToShoppingCart(Request $request){
-      $shoppingCart->deleteCartItem($_GET["id"]);
+        $shoppingCart = new ShoppingCart();
+        $shoppingCart->deleteCartItem($_GET["id"]);
+        return "products";
     }
 
     public function emptyItemToShoppingCart(Request $request){
-    $shoppingCart->emptyCart($member_id);
+        $shoppingCart = new ShoppingCart();
+        $shoppingCart->emptyCart($_SESSION["user"]);
+        return "products";
     }
 
 
@@ -227,7 +281,7 @@ class HomeController extends Controller{
         if(!$mailer->sendMail()){
             echo "Mailer Error: " . $mailer->getExceptionDetails();
         }else {
-            echo "mail sent sucessfully";
+            $this->message = "you have been registred sucessfully. Please activate your account. ";
         }
 
         return "Home";

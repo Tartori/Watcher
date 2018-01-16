@@ -27,9 +27,6 @@ abstract class Mailer{
     }
 
     protected function send($subject = "", $body = "", $receiver = "", $recieverAlias = ""){
-        echo "<br />Subject $subject <br />";
-        echo "<br />Body ". htmlspecialchars($body) . "< br />";
-        echo "<br />Reciever $receiver<br />";
         $this->mail->setFrom('watcher.shop@gmail.com', 'Watcher Shop');
         $this->mail->addReplyTo('watcher.shop@gmail.com', 'Watcher Shop');
         $this->mail->addAddress($receiver, $recieverAlias);
@@ -39,7 +36,7 @@ abstract class Mailer{
     }
 
     protected function load_mail_template($template_path, array $options = []){
-		$template = file_get_contents(__DIR__ . "/" . $template_path);
+        $template = file_get_contents(__DIR__ . "/" . $template_path);
 		foreach($options as $key => $value){
 			$regex = '/<%\s*\'' . $key . '\'\s*%>/i';
 			$template = preg_replace($regex, $value, $template);

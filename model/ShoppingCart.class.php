@@ -134,14 +134,14 @@ class ShoppingCart{
         $this->db->updateDB($query, $params);
     }
     
-    function insertOrder($customer_detail, $member_id, $amount)
+    function insertOrder($user, $amount)
     {
         $query = "INSERT INTO tbl_order (customer_id, amount, name, address, city, state, zip, country, payment_type, order_status, order_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         $params = array(
             array(
                 "param_type" => "i",
-                "param_value" => $member_id
+                "param_value" => $user->getId()
             ),
             array(
                 "param_type" => "i",
@@ -149,31 +149,31 @@ class ShoppingCart{
             ),
             array(
                 "param_type" => "s",
-                "param_value" => $customer_detail["name"]
+                "param_value" => $user->getName()
             ),
             array(
                 "param_type" => "s",
-                "param_value" => $customer_detail["address"]
+                "param_value" => $user->getAddressLine()
             ),
             array(
                 "param_type" => "s",
-                "param_value" => $customer_detail["city"]
+                "param_value" => $user->getCity()
             ),
             array(
                 "param_type" => "s",
-                "param_value" => $customer_detail["state"]
+                "param_value" => ""
             ),
             array(
                 "param_type" => "s",
-                "param_value" => $customer_detail["zip"]
+                "param_value" => $user->getPlz()
             ),
             array(
                 "param_type" => "s",
-                "param_value" => $customer_detail["country"]
+                "param_value" => ""
             ),
             array(
                 "param_type" => "s",
-                "param_value" => "PAYPAL"
+                "param_value" => "Invoice"
             ),
             array(
                 "param_type" => "s",

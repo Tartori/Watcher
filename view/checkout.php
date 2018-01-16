@@ -1,7 +1,7 @@
 <?php
-require_once "model/ShoppingCart.class.php";
+	require_once 'autoloader.php';
 
-$member_id = 2; // you can your integerate authentication module here to get logged in member
+$member_id = $_SESSION["user"]; // you can your integerate authentication module here to get logged in member
 
 $shoppingCart = new ShoppingCart();
 ?>
@@ -31,7 +31,7 @@ if (! empty($cartItem)) {
             <div class="txt-heading-label">Shopping Cart</div>
 
             <a id="btnEmpty" href="index.php?action=empty"><img
-                src="image/empty-cart.png" alt="empty-cart"
+                src="img/image/empty-cart.png" alt="empty-cart"
                 title="Empty Cart" class="float-right" /></a>
             <div class="cart-status">
                 <div>Total Quantity: <?php echo $item_quantity; ?></div>
@@ -49,7 +49,7 @@ if (! empty($cartItem)) {
         ?>
 
 </div>
-    <form name="frm_customer_detail" action="process-order.php" method="POST">
+    <form name="frm_customer_detail" action="index.php?action=processOrder" method="POST">
     <div class="frm-heading">
         <div class="txt-heading-label">Customer Details</div>
     </div>
@@ -57,32 +57,23 @@ if (! empty($cartItem)) {
         <div class="form-row">
             <div class="input-field">
                 <input type="text" name="name" id="name"
-                    PlaceHolder="Customer Name" required>
+                    PlaceHolder="Customer Name" value="<?php echo $data->getName(); ?>" required>
             </div>
 
             <div class="input-field">
-                <input type="text" name="address" PlaceHolder="Address" required>
+                <input type="text" name="address" PlaceHolder="Address" value="<?php echo $data->getAddressLine(); ?>" required>
             </div>
         </div>
 
         <div class="form-row">
             <div class="input-field">
-                <input type="text" name="city" PlaceHolder="City" required>
+                <input type="text" name="city" PlaceHolder="City" value="<?php echo $data->getCity(); ?>" required>
             </div>
 
             <div class="input-field">
-                <input type="text" name="state" PlaceHolder="State" required>
-            </div>
-        </div>
-
-        <div class="form-row">
-            <div class="input-field">
-                <input type="text" name="zip" PlaceHolder="Zip Code" required>
+                <input type="text" name="zip" PlaceHolder="Zip Code" value="<?php echo $data->getPLZ(); ?>" required>
             </div>
 
-            <div class="input-field">
-                <input type="text" name="country" PlaceHolder="Country" required>
-            </div>
         </div>
     </div>
     <div>
