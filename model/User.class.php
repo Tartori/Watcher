@@ -22,9 +22,11 @@ class User {
     static function create($firstname, $lastname, $addressLine, $plz, $city, $email, $pw){
         $instance = new self();
         $users = $instance->allUser();
-        foreach($users as $user){
-            if($user->getEmail()==$email){
-                throw new Exception("Email already exists.");
+        if(is_array($user)){
+            foreach($users as $user){
+                if($user->getEmail()==$email){
+                    throw new Exception("Email already exists.");
+                }
             }
         }
         $instance->loadWithData($firstname, $lastname, $addressLine, $plz, $city, $email, $pw);
