@@ -202,63 +202,58 @@ class User {
 
     public function saveToDb(){
         $query = "";
+        $params = array(
+            array(
+                "param_type" => "s",
+                "param_value" => $this->getFirstname()
+            ),array(
+                "param_type" => "s",
+                "param_value" => $this->getLastname()
+            ),array(
+                "param_type" => "s",
+                "param_value" => $this->getAddressLine()
+            ),array(
+                "param_type" => "s",
+                "param_value" => $this->getPlz()
+            ),array(
+                "param_type" => "s",
+                "param_value" => $this->getCity()
+            ),array(
+                "param_type" => "s",
+                "param_value" => $this->getEmail()
+            ),array(
+                "param_type" => "s",
+                "param_value" => $this->getPassword()
+            ),array(
+                "param_type" => "s",
+                "param_value" => $this->activated===true?1:0
+            ),array(
+                "param_type" => "s",
+                "param_value" => $this->getActivationHash()
+            ),array(
+                "param_type" => "s",
+                "param_value" => $this->isAdmin===true?1:0
+            )
+          );
         if(isset($this->id)){
             $query="UPDATE `user` SET ".
-            "`Firstname` = '". $this->getFirstname() ."',".
-            " `Lastname` = '". $this->getLastname() ."',".
-            "`AddressLine` = '". $this->getAddressLine() ."',".
-            " `PLZ` = '". $this->getPlz() ."',".
-            " `City` = '". $this->getCity() ."',".
-            " `Email` = '". $this->getEmail() ."',".
-            " `Password` = '". $this->getPassword() ."',".
-            " `Activated` = '";
-            if($this->activated===true){
-                $query.="1";
-            }else {
-                $query.="0";
-            }
-            $query.="',".
-            " `ActivationHash` = '". $this->getActivationHash() ."',".
-            " `IsAdmin` = '";
-            if($this->isAdmin===true){
-                $query.="1";
-            }else {
-                $query.="0";
-            }
-            
-            $query.="'".
-            " WHERE `user`.`ID` = ".$this->getId();
+            "`Firstname` = ?, `Lastname` = ?, `AddressLine` = ?, `PLZ` = ?,".
+            " `City` = ?, `Email` = ?, `Password` = ?, `Activated` = ?, `ActivationHash` = ?,".
+            " `IsAdmin` = ? WHERE ID = ?";
+            $params[]=  array(
+                "param_type" => "s",
+                "param_value" => $this->getId()
+            );
+
+            $this->db->updateDB($query, $params);
         }
         else{
             $query = "INSERT INTO `user`" .
             "(`Firstname`, `Lastname`, `AddressLine`, `PLZ`, `City`," .
             " `Email`, `Password`, `Activated`, `ActivationHash`, `IsAdmin`)".
-            " VALUES " .       
-            "('". $this->getFirstname() ."',".
-            " '". $this->getLastname() ."',".
-            " '". $this->getAddressLine() ."',".
-            " '". $this->getPlz() ."',".
-            " '". $this->getCity() ."',".
-            " '". $this->getEmail() ."',".
-            " '". $this->getPassword() ."', ".
-            " ";
-            if($this->activated===true){
-                $query.="1";
-            }else {
-                $query.="0";
-            }
-            $query.=",".
-            " '". $this->getActivationHash() ."',";
-            if($this->isAdmin===true){
-                $query.="1";
-            }else {
-                $query.="0";
-            }
-            
-            $query.=");";
+            " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $id= $this->db->insertDB($query, $params);
+            $this->id=$id;
         }
-        var_dump($query);
-        
-        $this->db->runStatement($query);
     }
 }

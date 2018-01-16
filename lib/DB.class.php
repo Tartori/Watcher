@@ -24,14 +24,44 @@ class DB {
 			return $resultset;
 	}
 
-	function runStatement($query) {
-		$result = mysqli_query($this->conn,$query);
-		if(!$result){
-			var_dump($query);
-			echo "</br>".mysqli_error($this->conn) ."</br > something went wrong. </ br>";
+	function insertDB($query, $params = array())
+    {
+        $sql_statement = $this->conn->prepare($query);
+        if (! empty($params)) {
+            $this->bindParams($sql_statement, $params);
+        }
+        $sql_statement->execute();
+
+        $id = mysqli_insert_id ( $this->conn );
+        return $id;
+    }
+
+    function updateDB($query, $params = array())
+    {
+		$sql_statement = $this->conn->prepare($query);
+        if (! empty($params)) {
+            $this->bindParams($sql_statement, $params);
 		}
-	}
-	
+        $sql_statement->execute();
+    }
+
+    function bindParams($sql_statement, $params)
+    {
+        $param_type = "";
+        foreach ($params as $query_param) {
+            $param_type .= $query_param["param_type"];
+        }
+
+        $bind_params[] = & $param_type;
+        foreach ($params as $k => $query_param) {
+            $bind_params[] = & $params[$k]["param_value"];
+        }
+
+        call_user_func_array(array(
+            $sql_statement,
+            'bind_param'
+        ), $bind_params);
+    }
 	function numRows($query) {
 		$result  = mysqli_query($this->conn,$query);
 		$rowcount = mysqli_num_rows($result);
