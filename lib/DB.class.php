@@ -3,18 +3,19 @@ class DB {
 	private $host = "localhost";
 	private $user = "root";
 	private $password = "";
-	private $database = "blog_samples";
+	//private $database = "blog_samples";
+	private $database = "shopping_cart";
 	private $conn;
-	
+
 	function __construct() {
 		$this->conn = $this->connectDB();
 	}
-	
+
 	function connectDB() {
 		$conn = mysqli_connect($this->host,$this->user,$this->password,$this->database);
 		return $conn;
 	}
-	
+
 	function getDBResult($query, $params = array())
     {
         $sql_statement = $this->conn->prepare($query);
@@ -76,10 +77,10 @@ class DB {
 	function numRows($query) {
 		$result  = mysqli_query($this->conn,$query);
 		$rowcount = mysqli_num_rows($result);
-		return $rowcount;	
+		return $rowcount;
 	}
 
 	function escapeString($toEscape){
 		return mysqli_real_escape_string($this->conn, $toEscape);
-	} 
+	}
 }

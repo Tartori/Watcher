@@ -1,5 +1,5 @@
 <?php
-require_once "ShoppingCart.php";
+require_once "model/ShoppingCart.class.php";
 
 $member_id = 2; // you can your integerate authentication module here to get logged in member
 

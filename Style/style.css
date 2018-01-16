@@ -100,12 +100,11 @@ section p {
 	margin: 3mm 0;
 }
 
-<<<<<<< Updated upstream
-form  { display: table;      }
+
+/*form  { display: table;      }
 p     { display: table-row;  }
 label { display: table-cell; }
-input { display: table-cell; }
-=======
+input { display: table-cell; }*/
 
 /*--- Checkout Style ---*/
 
@@ -130,7 +129,7 @@ input { display: table-cell; }
 }
 
 #shopping-cart{
-	width: 40%;
+	width: 50%;
 }
 #shopping-cart .txt-heading .txt-heading-label{
 	margin-top:5px;
@@ -296,4 +295,3 @@ input { display: table-cell; }
     color: #3a9ee0;
     cursor: pointer;
 }
->>>>>>> Stashed changes

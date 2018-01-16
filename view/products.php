@@ -1,5 +1,5 @@
 <?php
-require_once "ShoppingCart.php";
+require_once "model/ShoppingCart.class.php";
 
 $member_id = 2; // you can your integerate authentication module here to get logged in member
 
@@ -74,7 +74,7 @@ if (! empty($cartItem)) {
             require_once ("cart-list.php");
             ?>
             <div class="align-right">
-            <a href="index.php?lang=de&action=products/process-checkout.php"><button class="btn-action" name="check_out">Go To Checkout</button></a>
+            <a href="view/process-checkout.php"><button class="btn-action" name="check_out">Go To Checkout</button></a>
             </div>
 <?php
         } // End if !empty $cartItem

@@ -7,7 +7,7 @@ $produkte =array();
 $verzeichnis = "img/";
 
 class HomeController extends Controller{
-    
+
     public function index(Request $request){
 
     }
@@ -20,7 +20,7 @@ class HomeController extends Controller{
         $this->data = User::getById($_SESSION["user"]);
         $this->title = "Edit User";
     }
-    
+
     public function info(Request $reqest){
 
     }
@@ -48,7 +48,7 @@ class HomeController extends Controller{
         }catch (Exception $ex){
             $this->message = $ex->getMessage();
             return "Login";
-        }        
+        }
         $_SESSION["user"] = $user->getId();
         $_SESSION["isAdmin"]=$user->getIsAdmin();
         $_SESSION["isLoggedIn"]=true;
@@ -69,44 +69,33 @@ class HomeController extends Controller{
     }
 
     public function addItemToShoppingCart(Request $request){
-      $db_handle = new DB();
-      if(!empty($_POST["quantity"])) {
-        $productByCode = $db_handle->runQuery("SELECT * FROM tblproduct WHERE code='" . $db_handle->escapeString($_GET["code"]) . "'");
+      $member_id = 2;
+      $shoppingCart = new ShoppingCart();
+      if (! empty($_POST["quantity"])) {
 
-        $itemArray = array($productByCode[0]["code"]=>array('name'=>$productByCode[0]["name"], 'code'=>$productByCode[0]["code"], 'quantity'=>$_POST["quantity"], 'price'=>$productByCode[0]["price"]));
+          $productResult = $shoppingCart->getProductByCode($_GET["code"]);
 
-        if(!empty($_SESSION["cart_item"])) {
-          if(in_array($productByCode[0]["code"],array_keys($_SESSION["cart_item"]))) {
-            foreach($_SESSION["cart_item"] as $k => $v) {
-                if($productByCode[0]["code"] == $k) {
-                  if(empty($_SESSION["cart_item"][$k]["quantity"])) {
-                    $_SESSION["cart_item"][$k]["quantity"] = 0;
-                  }
-                  $_SESSION["cart_item"][$k]["quantity"] += $_POST["quantity"];
-                }
-            }
+          $cartResult = $shoppingCart->getCartItemByProduct($productResult[0]["id"], $member_id);
+
+          if (! empty($cartResult)) {
+              // Update cart item quantity in database
+              $newQuantity = $cartResult[0]["quantity"] + $_POST["quantity"];
+              $shoppingCart->updateCartQuantity($newQuantity, $cartResult[0]["id"]);
           } else {
-            $_SESSION["cart_item"] = array_merge($_SESSION["cart_item"],$itemArray);
+              // Add to cart table
+              $shoppingCart->addToCart($productResult[0]["id"], $_POST["quantity"], $member_id);
           }
-        } else {
-          $_SESSION["cart_item"] = $itemArray;
-        }
       }
+      return "products";
     }
 
     public function removeItemToShoppingCart(Request $request){
-    if(!empty($_SESSION["cart_item"])) {
-      foreach($_SESSION["cart_item"] as $k => $v) {
-          if($_GET["code"] == $k)
-            unset($_SESSION["cart_item"][$k]);
-          if(empty($_SESSION["cart_item"]))
-            unset($_SESSION["cart_item"]);
-      }
+      $shoppingCart->deleteCartItem($_GET["id"]);
     }
-  }
-public function emptyItemToShoppingCart(Request $request){
-    unset($_SESSION["cart_item"]);
-}
+
+    public function emptyItemToShoppingCart(Request $request){
+    $shoppingCart->emptyCart($member_id);
+    }
 
 
     public function getShoppingCart(Request $request){
@@ -146,7 +135,7 @@ public function emptyItemToShoppingCart(Request $request){
         $cemail = $_POST['cemail'];
         $pw = $_POST['pw'];
         $cpw = $_POST['cpw'];
-        $errMsg = $this->checkFields($firstname, $lastname, $address, $plz, $city, $email, $cemail, $pw, $cpw, true);  
+        $errMsg = $this->checkFields($firstname, $lastname, $address, $plz, $city, $email, $cemail, $pw, $cpw, true);
         if($errMsg!==""){
             $this->message = $errMsg;
             $this->data = $user;
@@ -198,13 +187,13 @@ public function emptyItemToShoppingCart(Request $request){
         }
         if($email!==$cemail){
             $errMsg.="Invalid confirmEmail<br/>";
-        } 
+        }
         if(!preg_match("/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d$@$!%*#?&]{8,}$/", $pw)&&!($pwMayBeEmpty&&$pw=="")){
             $errMsg.="Invalid Password<br/>";
         }
         if($pw!==$cpw){
             $errMsg.="Invalid confirmPassword<br/>";
-        } 
+        }
         return $errMsg;
     }
 
@@ -219,7 +208,7 @@ public function emptyItemToShoppingCart(Request $request){
         $cemail = $_POST['cemail'];
         $pw = $_POST['pw'];
         $cpw = $_POST['cpw'];
-        $errMsg = $this->checkFields($firstname, $lastname, $address, $plz, $city, $email, $cemail, $pw, $cpw, false);  
+        $errMsg = $this->checkFields($firstname, $lastname, $address, $plz, $city, $email, $cemail, $pw, $cpw, false);
         if($errMsg!==""){
             $this->message = $errMsg;
             return "register";

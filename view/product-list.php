@@ -10,7 +10,7 @@
             ?>
         <div class="product-item">
         <form method="post"
-            action="index.php?action=addItemToShoppingCart&code=<?php echo $product_array[$key]["code"]; ?>">
+            action="index.php?lang=de&controller=home&action=addItemToShoppingCart&code=<?php echo $product_array[$key]["code"]; ?>">
             <div class="product-image">
                 <img src="<?php echo $product_array[$key]["image"]; ?>">
                 <div class="product-title">
