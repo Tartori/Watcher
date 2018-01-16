@@ -8,7 +8,7 @@ CREATE TABLE `blog_samples`.`User` (
     `Email` VARCHAR(250) DEFAULT NULL, 
     `Password` VARCHAR(255) NOT NULL, 
     `Activated` BOOLEAN NOT NULL DEFAULT 1, 
-    `ActivationHash` VARCHAR(10),
+    `ActivationHash` VARCHAR(100),
     `IsAdmin` BOOLEAN NOT NULL DEFAULT 0,
     `CreationDate` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`ID`)) 

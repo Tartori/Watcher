@@ -16,7 +16,7 @@ class View {
 		$message = $this->controller->getMessage();
 		$ct = $this->controller->getTitle();
 		$title = "Watcher" . ($ct ? " - ".$ct : "");
-
+		$data = $this->controller->getData();
 		include  __DIR__ ."/main.php";
 	}
 }
