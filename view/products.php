@@ -6,65 +6,47 @@ $db_handle = new DB();
 $produkte =array();
 
 $verzeichnis = "img/";
-/*$produkte = array(
-                      array('id' => "1",
-                            'name' => "Casio",
-                            'code'=> "casio123",
-                            'price' => "30 CHF",
-                            'description' => "Sehr cool",
-                            'sizes' => "Sehr cool",
-                            'img' => "hoover.jpg",
-                            'colors' => "blau"),
-                      array('id' => "2",
-                            'name' => "Swatch",
-                            'code'=> "swatch123",
-                            'price' => "50 CHF",
-                            'description' => "ehr cool",
-                            'sizes' => "Sehr cool",
-                            'img' => "loewen.jpg",
-                            'colors' => "rot"));
-                        */
 
 
 if(!empty($_GET["action"])) {
 switch($_GET["action"]) {
-	case "add":
-		if(!empty($_POST["quantity"])) {
-			$productByCode = $db_handle->runQuery("SELECT * FROM tblproduct WHERE code='" . $db_handle->escapeString($_GET["code"]) . "'");
-
-      $itemArray = array($productByCode[0]["code"]=>array('name'=>$productByCode[0]["name"], 'code'=>$productByCode[0]["code"], 'quantity'=>$_POST["quantity"], 'price'=>$productByCode[0]["price"]));
-
-			if(!empty($_SESSION["cart_item"])) {
-				if(in_array($productByCode[0]["code"],array_keys($_SESSION["cart_item"]))) {
-					foreach($_SESSION["cart_item"] as $k => $v) {
-							if($productByCode[0]["code"] == $k) {
-								if(empty($_SESSION["cart_item"][$k]["quantity"])) {
-									$_SESSION["cart_item"][$k]["quantity"] = 0;
-								}
-								$_SESSION["cart_item"][$k]["quantity"] += $_POST["quantity"];
-							}
-					}
-				} else {
-					$_SESSION["cart_item"] = array_merge($_SESSION["cart_item"],$itemArray);
-				}
-			} else {
-				$_SESSION["cart_item"] = $itemArray;
-			}
-		}
-	break;
-	case "remove":
-		if(!empty($_SESSION["cart_item"])) {
-			foreach($_SESSION["cart_item"] as $k => $v) {
-					if($_GET["code"] == $k)
-						unset($_SESSION["cart_item"][$k]);
-					if(empty($_SESSION["cart_item"]))
-						unset($_SESSION["cart_item"]);
-			}
-		}
-	break;
-	case "empty":
-		unset($_SESSION["cart_item"]);
-	break;
+	// case "add":
+	// 	if(!empty($_POST["quantity"])) {
+	// 		$productByCode = $db_handle->runQuery("SELECT * FROM tblproduct WHERE code='" . $db_handle->escapeString($_GET["code"]) . "'");
+	//
+  //     $itemArray = array($productByCode[0]["code"]=>array('name'=>$productByCode[0]["name"], 'code'=>$productByCode[0]["code"], 'quantity'=>$_POST["quantity"], 'price'=>$productByCode[0]["price"]));
+	//
+	// 		if(!empty($_SESSION["cart_item"])) {
+	// 			if(in_array($productByCode[0]["code"],array_keys($_SESSION["cart_item"]))) {
+	// 				foreach($_SESSION["cart_item"] as $k => $v) {
+	// 						if($productByCode[0]["code"] == $k) {
+	// 							if(empty($_SESSION["cart_item"][$k]["quantity"])) {
+	// 								$_SESSION["cart_item"][$k]["quantity"] = 0;
+	// 							}
+	// 							$_SESSION["cart_item"][$k]["quantity"] += $_POST["quantity"];
+	// 						}
+	// 				}
+	// 			} else {
+	// 				$_SESSION["cart_item"] = array_merge($_SESSION["cart_item"],$itemArray);
+	// 			}
+	// 		} else {
+	// 			$_SESSION["cart_item"] = $itemArray;
+	// 		}
+	// 	}
+	// break;
+	// case "remove":
+	// 	if(!empty($_SESSION["cart_item"])) {
+	// 		foreach($_SESSION["cart_item"] as $k => $v) {
+	// 				if($_GET["code"] == $k)
+	// 					unset($_SESSION["cart_item"][$k]);
+	// 				if(empty($_SESSION["cart_item"]))
+	// 					unset($_SESSION["cart_item"]);
+	// 		}
+	// 	}
+	// break;
+	// case "empty":
+	// 	unset($_SESSION["cart_item"]);
+	// break;
   case "decrease":
   if(!empty($_SESSION["cart_item"])) {
     foreach($_SESSION["cart_item"] as $k => $v) {
@@ -93,7 +75,7 @@ switch($_GET["action"]) {
 </HEAD>
 <BODY>
 <div id="shopping-cart">
-<div class="txt-heading">Shopping Cart <a code="btnEmpty" href="index.php?lang=de&id=products&action=empty">Empty Cart</a></div>
+<div class="txt-heading">Shopping Cart <a code="btnEmpty" href="index.php?lang=de&id=products&action=emptyItemToShoppingCart">Empty Cart</a></div>
 <?php
 if(isset($_SESSION["cart_item"])){
     $item_total = 0;
@@ -117,7 +99,7 @@ if(isset($_SESSION["cart_item"])){
         <td style="text-align:left;border-bottom:#F0F0F0 1px solid;"><a href="index.php?lang=de&id=products&action=increase&code=<?php echo $item["code"]; ?>" class="btnIncreaseAction">+1</a></td>
 				<td style="text-align:right;border-bottom:#F0F0F0 1px solid;"><?php echo $item["quantity"]; ?></td>
 				<td style="text-align:right;border-bottom:#F0F0F0 1px solid;"><?php echo "$".$item["price"]; ?></td>
-				<td style="text-align:center;border-bottom:#F0F0F0 1px solid;"><a href="index.php?lang=de&id=products&action=remove&code=<?php echo $item["code"]; ?>" class="btnRemoveAction">Remove Item</a></td>
+				<td style="text-align:center;border-bottom:#F0F0F0 1px solid;"><a href="index.php?lang=de&id=products&action=removeItemToShoppingCart&code=<?php echo $item["code"]; ?>" class="btnRemoveAction">Remove Item</a></td>
 				</tr>
 				<?php
         $item_total += ($item["price"]*$item["quantity"]);
@@ -169,7 +151,7 @@ echo "<hr>";
 	?>
 		<div class="product-item">
 
-			<form method="post" action="index.php?lang=de&id=products&action=add&code=<?php echo $product_array[$key]["code"]; ?>">
+			<form method="post" action="index.php?lang=de&action=products&action=addItemToShoppingCart&code=<?php echo $product_array[$key]["code"]; ?>">
 			<div class="product-image"><img src="<?php echo  $verzeichnis . $product_array[$key]["image"]; ?>"></div>
 			<div><strong><?php echo $product_array[$key]["name"]; ?></strong></div>
 			<div class="product-price"><?php echo "CHF ".$product_array[$key]["price"]; ?></div>
