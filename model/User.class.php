@@ -60,8 +60,12 @@ class User {
         return $instance.allUser();
     }
     protected function loadById($id){
-        $query = "select * from user where ID=".$this->db->escapeString($id);
-        $result = $this->db->runQuery($query);
+        $query = "select * from user where ID=?";
+        $result = $this->db->getDBResult($query, array(array(
+            "param_type" => "s",
+            "param_value" => $id
+        )));
+        
         if(is_null($result)){
             throw new Exception("Unknown User");
         }
@@ -73,7 +77,8 @@ class User {
         $result = $this->db->getDBResult($query, array(array(
             "param_type" => "s",
             "param_value" => $this->getEmail()
-        )));        if(is_null($result)){
+        )));
+        if(is_null($result)){
             throw new Exception("Invalid or already used Activation Hash");
         }
         $this->loadFromDbRow($result[0]);
