@@ -5,15 +5,15 @@
     <?php
     $product_array = $shoppingCart->getAllProduct();
     if (! empty($product_array)) {
-        foreach ($product_array as $key => $value) {
+        foreach ($product_array as $product) {
             ?>
         <div class="product-item">
         <form method="post"
-            action="index.php?lang=de&controller=home&action=addItemToShoppingCart&code=<?php echo $product_array[$key]["code"]; ?>">
+            action="index.php?lang=de&controller=home&action=addItemToShoppingCart&code=<?php echo $product->getCode(); ?>">
             <div class="product-image">
-                <img src="img/<?php echo $product_array[$key]["image"]; ?>">
+                <img src="img/<?php echo $product->getImage(); ?>">
                 <div class="product-title">
-                    <?php echo $product_array[$key]["name"]; ?>
+                    <?php echo $product->getName();; ?>
                 </div>
             </div>
             <div class="product-footer">
@@ -22,7 +22,7 @@
                         size="2" class="input-cart-quantity" /><input type="image"
                         src="img/image/add-to-cart.png" class="btnAddAction" />
                 </div>
-                <div class="product-price float-left"><?php echo "$".$product_array[$key]["price"]; ?></div>
+                <div class="product-price float-left"><?php echo "$".$product->getPrice(); ?></div>
 
             </div>
         </form>

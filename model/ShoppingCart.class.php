@@ -10,10 +10,7 @@ class ShoppingCart{
 
     function getAllProduct()
     {
-        $query = "SELECT * FROM tbl_product";
-        
-        $productResult = $this->db->getDBResult($query);
-        return $productResult;
+        return Product::getAllProducts();
     }
 
     function getMemberCartItem($member_id)
