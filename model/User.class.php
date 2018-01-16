@@ -36,6 +36,12 @@ class User {
         $instance->loadWithLogin($mail, $pw);
         return $instance;
     }
+
+    static function getById($id){
+        $instance = new self();
+        $instance->loadById($id);
+        return $instance;
+    }
     
     static function activate($code){
         $instance = new self();
@@ -53,7 +59,14 @@ class User {
         $instance = new self();
         return $instance.allUser();
     }
-
+    protected function loadById($id){
+        $query = "select * from user where ID=".$this->db->escapeString($id);
+        $result = $this->db->runQuery($query);
+        if(is_null($result)){
+            throw new Exception("Unknown User");
+        }
+        $this->loadFromDbRow($result[0]);
+    }
     protected function loadActivation($code){
         $this->setActivationHash($code);
         $query = "select * from user where ActivationHash=?";
