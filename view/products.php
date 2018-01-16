@@ -57,9 +57,9 @@ function decrement_quantity(cart_id, price) {
 function save_to_db(cart_id, new_quantity, newPrice) {
 	var inputQuantityElement = $("#input-quantity-"+cart_id);
 	var priceElement = $("#cart-price-"+cart_id);
-    $.ajax({
-		url : "view/updateCartQuantity.php",
-		data : "cart_id="+cart_id+"&new_quantity="+new_quantity,
+    $.post({
+		url : "index.php?action=updateCartQuantity&controller=home",
+		data : {"cart_id": cart_id, "new_quantity":new_quantity},
 		type : 'post',
 		success : function(response) {
 			$(inputQuantityElement).val(new_quantity);
