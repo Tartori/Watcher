@@ -15,14 +15,25 @@ class DB {
 		return $conn;
 	}
 	
-	function runQuery($query) {
-		$result = mysqli_query($this->conn,$query);
-		while($row=mysqli_fetch_assoc($result)) {
-			$resultset[] = $row;
-		}		
-		if(!empty($resultset))
-			return $resultset;
-	}
+	function getDBResult($query, $params = array())
+    {
+        $sql_statement = $this->conn->prepare($query);
+        if (! empty($params)) {
+            $this->bindParams($sql_statement, $params);
+        }
+        $sql_statement->execute();
+        $result = $sql_statement->get_result();
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $resultset[] = $row;
+            }
+        }
+
+        if (! empty($resultset)) {
+            return $resultset;
+        }
+    }
 
 	function insertDB($query, $params = array())
     {

@@ -56,9 +56,11 @@ class User {
 
     protected function loadActivation($code){
         $this->setActivationHash($code);
-        $query = "select * from user where ActivationHash='".$this->getActivationHash()."'";
-        $result = $this->db->runQuery($query);
-        if(is_null($result)){
+        $query = "select * from user where ActivationHash=?";
+        $result = $this->db->getDBResult($query, array(array(
+            "param_type" => "s",
+            "param_value" => $this->getEmail()
+        )));        if(is_null($result)){
             throw new Exception("Invalid or already used Activation Hash");
         }
         $this->loadFromDbRow($result[0]);
@@ -69,8 +71,11 @@ class User {
 
     protected function loadWithLogin($mail, $pw){
         $this->setEmail($mail);
-        $query = "select * from user where email='".$this->getEmail()."'";
-        $result = $this->db->runQuery($query);
+        $query = "select * from user where email=?";
+        $result = $this->db->getDBResult($query, array(array(
+            "param_type" => "s",
+            "param_value" => $this->getEmail()
+        )));
         if(is_null($result)){
             throw new Exception("Invalid Password or Email");
         }
@@ -192,7 +197,7 @@ class User {
 
     private function allUser(){
         $query = "select * from user;";
-        $result = $this->db->runQuery($query);
+        $result = $this->db->getDBResult($query);
         $users = array();
         foreach($result as $row){
             $users[]=User::fromDbRow($row);
