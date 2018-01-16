@@ -9,7 +9,7 @@ $verzeichnis = "img/";
 class HomeController extends Controller{
 
     public function index(Request $request){
-
+        return "Home";
     }
 
     public function products(Request $reqest){
@@ -26,7 +26,7 @@ class HomeController extends Controller{
     }
 
     public function home(Request $request){
-
+        
     }
 
     public function contact(Request $request){
