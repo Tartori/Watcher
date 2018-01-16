@@ -26,7 +26,7 @@ class HomeController extends Controller{
     }
 
     public function home(Request $request){
-        
+
     }
 
     public function contact(Request $request){

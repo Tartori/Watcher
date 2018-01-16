@@ -1,7 +1,7 @@
 <?php
 
 $member_id = 0;
-if((array_key_exists("user", $_SESSION)&&!is_null($_SESSION["user"]))){    
+if((array_key_exists("user", $_SESSION)&&!is_null($_SESSION["user"]))){
     $member_id = $_SESSION["user"];
 }
 $shoppingCart = new ShoppingCart();
@@ -35,14 +35,51 @@ if (! empty($_GET["action"])) {
     }
 }
 ?>
-<HTML>
-<HEAD>
-<TITLE>Enriched Responsive Shopping Cart in PHP</TITLE>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="jquery-3.2.1.min.js"></script>
+<script>
+function increment_quantity(cart_id, price) {
+    var inputQuantityElement = $("#input-quantity-"+cart_id);
+    var newQuantity = parseInt($(inputQuantityElement).val())+1;
+    var newPrice = newQuantity * price;
+    save_to_db(cart_id, newQuantity, newPrice);
+}
 
-<link href="style.css" type="text/css" rel="stylesheet" />
-</HEAD>
-<BODY>
+function decrement_quantity(cart_id, price) {
+    var inputQuantityElement = $("#input-quantity-"+cart_id);
+    if($(inputQuantityElement).val() > 1)
+    {
+    var newQuantity = parseInt($(inputQuantityElement).val()) - 1;
+    var newPrice = newQuantity * price;
+    save_to_db(cart_id, newQuantity, newPrice);
+    }
+}
+
+function save_to_db(cart_id, new_quantity, newPrice) {
+	var inputQuantityElement = $("#input-quantity-"+cart_id);
+	var priceElement = $("#cart-price-"+cart_id);
+    $.ajax({
+		url : "view/updateCartQuantity.php",
+		data : "cart_id="+cart_id+"&new_quantity="+new_quantity,
+		type : 'post',
+		success : function(response) {
+			$(inputQuantityElement).val(new_quantity);
+            $(priceElement).text("$"+newPrice);
+            var totalQuantity = 0;
+            $("input[id*='input-quantity-']").each(function() {
+                var cart_quantity = $(this).val();
+                totalQuantity = parseInt(totalQuantity) + parseInt(cart_quantity);
+            });
+            $("#total-quantity").text(totalQuantity);
+            var totalItemPrice = 0;
+            $("div[id*='cart-price-']").each(function() {
+                var cart_price = $(this).text().replace("$","");
+                totalItemPrice = parseInt(totalItemPrice) + parseInt(cart_price);
+            });
+            $("#total-price").text(totalItemPrice);
+		}
+	});
+}
+</script>
 <?php
 $cartItem = $shoppingCart->getMemberCartItem($member_id);
 $item_quantity = 0;
@@ -64,8 +101,8 @@ if (! empty($cartItem)) {
                 src="img/image/empty-cart.png" alt="empty-cart"
                 title="Empty Cart" class="float-right" /></a>
             <div class="cart-status">
-                <div>Total Quantity: <?php echo $item_quantity; ?></div>
-                <div>Total Price: $ <?php echo $item_price; ?></div>
+                <div>Total Quantity:<span id="total-quantity"> <?php echo $item_quantity; ?></div>
+                <div>Total Price:<span id="total-price"> $ <?php echo $item_price; ?></div>
             </div>
         </div>
         <?php
@@ -85,6 +122,3 @@ if (! empty($cartItem)) {
 <?php
 require_once "product-list.php";
 ?>
-
-</BODY>
-</HTML>
