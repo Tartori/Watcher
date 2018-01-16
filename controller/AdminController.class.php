@@ -42,7 +42,14 @@ class AdminController extends Controller{
     }
 
     public function checkAllOrders(Request $request){
-        
+        $shoppingCart = new ShoppingCart();
+        $this->data = $shoppingCart->getAllOrders();
+    }
+
+    public function orderDetail(Request $request){
+        $id=$request->getParameter("id", 0);
+        $shoppingCart = new ShoppingCart();
+        $this->data = $shoppingCart->getOrderDetails($id);
     }
 
     public function editProductView(Request $request){

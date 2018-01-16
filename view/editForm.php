@@ -14,3 +14,4 @@
     <p><label for="pr">Price: </label><input id="pr" name="price" value="<?php echo isset($product)?$product->getPrice():""; ?>" pattern="^\d+.\d{0,2}$" required/></p>
     <p><input type="submit" /></p>
 </form>
+<a href='index.php?controller=admin&action=editProducts'>Cancel<a/>

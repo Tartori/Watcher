@@ -131,6 +131,12 @@ class ShoppingCart{
         $this->db->updateDB($query, $params);
     }
     
+    function getAllOrders(){
+        $query = "SELECT * FROM tbl_order";
+        $orderResult = $this->db->getDBResult($query);
+        return $orderResult;
+    }
+
     function insertOrder($user, $amount)
     {
         $query = "INSERT INTO tbl_order (customer_id, amount, name, address, city, state, zip, country, payment_type, order_status, order_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -186,6 +192,20 @@ class ShoppingCart{
         return $order_id;
     }
     
+    function getOrderDetails($id){
+        $query = "SELECT * FROM tbl_order_item WHERE order_id = ?";
+        
+        $params = array(
+            array(
+                "param_type" => "s",
+                "param_value" => $id
+            )
+        );
+        
+        $orderDetailResult = $this->db->getDBResult($query, $params);
+        return $orderDetailResult;
+    }
+
     function insertOrderItem($order, $product_id, $price, $quantity)
     {
         $query = "INSERT INTO tbl_order_item (order_id, product_id, item_price, quantity) VALUES (?, ?, ?, ?)";
