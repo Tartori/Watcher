@@ -1,167 +1,89 @@
 <?php
+require_once "ShoppingCart.php";
 
-require_once 'autoloader.php';
-$db_handle = new DB();
+$member_id = 2; // you can your integerate authentication module here to get logged in member
 
-$produkte =array();
+$shoppingCart = new ShoppingCart();
+if (! empty($_GET["action"])) {
+    switch ($_GET["action"]) {
+        case "add":
+            if (! empty($_POST["quantity"])) {
 
-$verzeichnis = "img/";
+                $productResult = $shoppingCart->getProductByCode($_GET["code"]);
 
+                $cartResult = $shoppingCart->getCartItemByProduct($productResult[0]["id"], $member_id);
 
-if(!empty($_GET["action"])) {
-switch($_GET["action"]) {
-	// case "add":
-	// 	if(!empty($_POST["quantity"])) {
-	// 		$productByCode = $db_handle->runQuery("SELECT * FROM tblproduct WHERE code='" . $db_handle->escapeString($_GET["code"]) . "'");
-	//
-  //     $itemArray = array($productByCode[0]["code"]=>array('name'=>$productByCode[0]["name"], 'code'=>$productByCode[0]["code"], 'quantity'=>$_POST["quantity"], 'price'=>$productByCode[0]["price"]));
-	//
-	// 		if(!empty($_SESSION["cart_item"])) {
-	// 			if(in_array($productByCode[0]["code"],array_keys($_SESSION["cart_item"]))) {
-	// 				foreach($_SESSION["cart_item"] as $k => $v) {
-	// 						if($productByCode[0]["code"] == $k) {
-	// 							if(empty($_SESSION["cart_item"][$k]["quantity"])) {
-	// 								$_SESSION["cart_item"][$k]["quantity"] = 0;
-	// 							}
-	// 							$_SESSION["cart_item"][$k]["quantity"] += $_POST["quantity"];
-	// 						}
-	// 				}
-	// 			} else {
-	// 				$_SESSION["cart_item"] = array_merge($_SESSION["cart_item"],$itemArray);
-	// 			}
-	// 		} else {
-	// 			$_SESSION["cart_item"] = $itemArray;
-	// 		}
-	// 	}
-	// break;
-	// case "remove":
-	// 	if(!empty($_SESSION["cart_item"])) {
-	// 		foreach($_SESSION["cart_item"] as $k => $v) {
-	// 				if($_GET["code"] == $k)
-	// 					unset($_SESSION["cart_item"][$k]);
-	// 				if(empty($_SESSION["cart_item"]))
-	// 					unset($_SESSION["cart_item"]);
-	// 		}
-	// 	}
-	// break;
-	// case "empty":
-	// 	unset($_SESSION["cart_item"]);
-	// break;
-  case "decrease":
-  if(!empty($_SESSION["cart_item"])) {
-    foreach($_SESSION["cart_item"] as $k => $v) {
-        if($_GET["code"] == $k)
-        	$_SESSION["cart_item"][$k]["quantity"] -= 1;
-        if($_SESSION["cart_item"][$k]["quantity"] == 0)
-          unset($_SESSION["cart_item"][$k]);
+                if (! empty($cartResult)) {
+                    // Update cart item quantity in database
+                    $newQuantity = $cartResult[0]["quantity"] + $_POST["quantity"];
+                    $shoppingCart->updateCartQuantity($newQuantity, $cartResult[0]["id"]);
+                } else {
+                    // Add to cart table
+                    $shoppingCart->addToCart($productResult[0]["id"], $_POST["quantity"], $member_id);
+                }
+            }
+            break;
+        case "remove":
+            // Delete single entry from the cart
+            $shoppingCart->deleteCartItem($_GET["id"]);
+            break;
+        case "empty":
+            // Empty cart
+            $shoppingCart->emptyCart($member_id);
+            break;
     }
-  }
-  break;
-  case "increase":
-  if(!empty($_SESSION["cart_item"])) {
-    foreach($_SESSION["cart_item"] as $k => $v) {
-        if($_GET["code"] == $k)
-        	$_SESSION["cart_item"][$k]["quantity"] += 1;
-    }
-  }
-  break;
-}
 }
 ?>
 <HTML>
 <HEAD>
-<TITLE>Simple PHP Shopping Cart</TITLE>
+<TITLE>Enriched Responsive Shopping Cart in PHP</TITLE>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <link href="style.css" type="text/css" rel="stylesheet" />
 </HEAD>
 <BODY>
-<div id="shopping-cart">
-<div class="txt-heading">Shopping Cart <a code="btnEmpty" href="index.php?lang=de&id=products&action=emptyItemToShoppingCart">Empty Cart</a></div>
 <?php
-if(isset($_SESSION["cart_item"])){
-    $item_total = 0;
-?>
-<table cellpadding="10" cellspacing="1">
-<tbody>
-<tr>
-<th style="text-align:left;"><strong>Name</strong></th>
-<th style="text-align:left;"><strong></strong></th>
-<th style="text-align:left;"><strong></strong></th>
-<th style="text-align:right;"><strong>Quantity</strong></th>
-<th style="text-align:right;"><strong>Price</strong></th>
-<th style="text-align:center;"><strong>Action</strong></th>
-</tr>
-<?php
-    foreach ($_SESSION["cart_item"] as $item){
-		?>
-				<tr>
-				<td style="text-align:left;border-bottom:#F0F0F0 1px solid;"><strong><?php echo $item["name"]; ?></strong></td>
-        <td style="text-align:left;border-bottom:#F0F0F0 1px solid;"><a href="index.php?lang=de&id=products&action=decrease&code=<?php echo $item["code"]; ?>" class="btnDecreaseAction">-1</a></td>
-        <td style="text-align:left;border-bottom:#F0F0F0 1px solid;"><a href="index.php?lang=de&id=products&action=increase&code=<?php echo $item["code"]; ?>" class="btnIncreaseAction">+1</a></td>
-				<td style="text-align:right;border-bottom:#F0F0F0 1px solid;"><?php echo $item["quantity"]; ?></td>
-				<td style="text-align:right;border-bottom:#F0F0F0 1px solid;"><?php echo "$".$item["price"]; ?></td>
-				<td style="text-align:center;border-bottom:#F0F0F0 1px solid;"><a href="index.php?lang=de&id=products&action=removeItemToShoppingCart&code=<?php echo $item["code"]; ?>" class="btnRemoveAction">Remove Item</a></td>
-				</tr>
-				<?php
-        $item_total += ($item["price"]*$item["quantity"]);
-		}
-		?>
-
-<tr>
-<td colspan="5" align=right><strong>Total:</strong> <?php echo "$".$item_total; ?></td>
-</tr>
-</tbody>
-</table>
-  <?php
+$cartItem = $shoppingCart->getMemberCartItem($member_id);
+$item_quantity = 0;
+$item_price = 0;
+if (! empty($cartItem)) {
+    if (! empty($cartItem)) {
+        foreach ($cartItem as $item) {
+            $item_quantity = $item_quantity + $item["quantity"];
+            $item_price = $item_price + ($item["price"] * $item["quantity"]);
+        }
+    }
 }
 ?>
-</div>
+<div id="shopping-cart">
+        <div class="txt-heading">
+            <div class="txt-heading-label">Shopping Cart</div>
 
-
-<h1>
-    <?php echo t("title"); ?>
-</h1>
-
+            <a id="btnEmpty" href="index.php?action=empty"><img
+                src="image/empty-cart.png" alt="empty-cart"
+                title="Empty Cart" class="float-right" /></a>
+            <div class="cart-status">
+                <div>Total Quantity: <?php echo $item_quantity; ?></div>
+                <div>Total Price: $ <?php echo $item_price; ?></div>
+            </div>
+        </div>
+        <?php
+        if (! empty($cartItem)) {
+            ?>
 <?php
+            require_once ("cart-list.php");
+            ?>
+            <div class="align-right">
+            <a href="index.php?lang=de&action=products/process-checkout.php"><button class="btn-action" name="check_out">Go To Checkout</button></a>
+            </div>
+<?php
+        } // End if !empty $cartItem
+        ?>
 
-
-
-
-
-// Ausgabe der Bilderdateinamen zur Kontrolle
-echo "<pre>";
-
-echo "<hr>";
-/*foreach($produkte as $key=>$inhalt){
-      //echo "<p>". $inhalt['$_GET["code"]'] .":". "</p></br>";
-      echo "<p>". $inhalt["price"]. "</p></br>";
-      echo "<p>". $inhalt["description"]. "</p></br>";
-
-      echo "<img src=$verzeichnis". $inhalt['img'] . ">";
-}*/
-
-?>
-<div id="product-grid">
-	<div class="txt-heading">Produkte</div>
-	<?php
-
-
-	$product_array = $db_handle->runQuery("SELECT * FROM tblproduct ORDER BY id ASC");
-	if (!empty($product_array)) {
-		foreach($product_array as $key=>$value){
-	?>
-		<div class="product-item">
-
-			<form method="post" action="index.php?lang=de&action=products&action=addItemToShoppingCart&code=<?php echo $product_array[$key]["code"]; ?>">
-			<div class="product-image"><img src="<?php echo  $verzeichnis . $product_array[$key]["image"]; ?>"></div>
-			<div><strong><?php echo $product_array[$key]["name"]; ?></strong></div>
-			<div class="product-price"><?php echo "CHF ".$product_array[$key]["price"]; ?></div>
-			<div><input type="text" name="quantity" value="1" size="2" /><input type="submit" value="Add to cart" class="btnAddAction" /></div>
-			</form>
-		</div>
-
-
-	<?php
-			}
-	}
-	?>
 </div>
+<?php
+require_once "product-list.php";
+?>
+
+</BODY>
+</HTML>
