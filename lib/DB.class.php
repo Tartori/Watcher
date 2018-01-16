@@ -3,8 +3,7 @@ class DB {
 	private $host = "localhost";
 	private $user = "root";
 	private $password = "";
-	private $database = "blog_samples";
-	//private $database = "shopping_cart";
+	private $database = "watcher";
 	private $conn;
 
 	function __construct() {

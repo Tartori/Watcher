@@ -2,10 +2,10 @@
 -- version 4.7.4
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Dec 12, 2017 at 04:50 AM
--- Server version: 5.6.37
--- PHP Version: 7.1.7
+-- Host: 127.0.0.1
+-- Generation Time: Jan 16, 2018 at 03:33 PM
+-- Server version: 10.1.26-MariaDB
+-- PHP Version: 7.1.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `shopping_cart`
+-- Database: `Watcher`
 --
 
 -- --------------------------------------------------------
@@ -103,9 +103,33 @@ CREATE TABLE `tbl_product` (
 --
 
 INSERT INTO `tbl_product` (`id`, `name`, `code`, `image`, `price`) VALUES
-(1, '3D Camera', '3DcAM01', 'product/camera.jpg', 1500.00),
-(2, 'External Hard Drive', 'USB02', 'product/external-hard-drive.jpg', 800.00),
-(3, 'Wrist Watch', 'wristWear03', 'product/watch.jpg', 300.00);
+(1, '3D Camera', '3DcAM01', 'camera.jpg', 1500.00),
+(2, 'External Hard Drive', 'USB02', 'external-hard-drive.jpg', 800.00),
+(3, 'Wrist Watch', 'wristWear03', 'watch.jpg', 300.00),
+(7, 'Casio', 'CA1', 'hoover.jpg', 1500.00),
+(8, 'Swatch', 'SW1', 'loewen.jpg', 800.00),
+(9, 'Radio', 'RA1', 'monument.jpg', 300.00);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user`
+--
+
+CREATE TABLE `user` (
+  `ID` int(11) NOT NULL,
+  `Firstname` varchar(50) COLLATE utf8_bin NOT NULL,
+  `Lastname` varchar(50) COLLATE utf8_bin NOT NULL,
+  `AddressLine` varchar(100) COLLATE utf8_bin DEFAULT NULL,
+  `PLZ` int(11) DEFAULT NULL,
+  `City` varchar(50) COLLATE utf8_bin DEFAULT NULL,
+  `Email` varchar(250) COLLATE utf8_bin DEFAULT NULL,
+  `Password` varchar(255) COLLATE utf8_bin NOT NULL,
+  `Activated` tinyint(1) NOT NULL DEFAULT '1',
+  `ActivationHash` varchar(100) COLLATE utf8_bin DEFAULT NULL,
+  `IsAdmin` tinyint(1) NOT NULL DEFAULT '0',
+  `CreationDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Indexes for dumped tables
@@ -143,6 +167,12 @@ ALTER TABLE `tbl_product`
   ADD UNIQUE KEY `product_code` (`code`);
 
 --
+-- Indexes for table `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`ID`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -150,19 +180,19 @@ ALTER TABLE `tbl_product`
 -- AUTO_INCREMENT for table `tbl_cart`
 --
 ALTER TABLE `tbl_cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tbl_order`
 --
 ALTER TABLE `tbl_order`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tbl_order_item`
 --
 ALTER TABLE `tbl_order_item`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tbl_payment`
@@ -174,7 +204,13 @@ ALTER TABLE `tbl_payment`
 -- AUTO_INCREMENT for table `tbl_product`
 --
 ALTER TABLE `tbl_product`
-  MODIFY `id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `user`
+--
+ALTER TABLE `user`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
