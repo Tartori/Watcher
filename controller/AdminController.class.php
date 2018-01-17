@@ -5,6 +5,8 @@ class AdminController extends Controller{
     
     public function editProducts(Request $request){
         $this->data = Product::getAllProducts();
+        $this->title = t("editProducts");
+
         return "editProducts";
     }
 
@@ -14,7 +16,7 @@ class AdminController extends Controller{
             $product= Product::getById($id);
             $product->delete();
         }catch(Exception $ex){
-            $this->message = "Id to delete not found";
+            $this->message = t("IdDelete");
         }
         return $this->editProducts($request);
     }
@@ -50,6 +52,7 @@ class AdminController extends Controller{
         $id=$request->getParameter("id", 0);
         $shoppingCart = new ShoppingCart();
         $this->data = $shoppingCart->getOrderDetails($id);
+        $this->title = t("orderDetail");
     }
 
     public function editProductView(Request $request){
@@ -58,13 +61,15 @@ class AdminController extends Controller{
             $product= Product::getById($id);
             $this->data[] = $product;
         }catch(Exception $ex){
-            $this->message = "Id to edit not found";
-            return "editProducts";
+            $this->message = t("IdDelete");
+            return $this->editProducts($request);
         }
+        $this->title=t("changeProduct");
         return "editForm";
     }
 
     public function addProductView(Request $request){
+        $this->title = t("addProduct");
         return "editForm";
     }
 

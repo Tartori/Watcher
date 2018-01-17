@@ -13,16 +13,16 @@ class HomeController extends Controller{
     }
 
     public function products(Request $reqest){
-
+        $this->title = t("products");
     }
 
     public function edit(Request $request){
         $this->data = User::getById($_SESSION["user"]);
-        $this->title = "Edit User";
+        $this->title = t("editUser");
     }
 
     public function info(Request $reqest){
-
+        $this->title=t("info");
     }
 
     public function home(Request $request){
@@ -30,12 +30,11 @@ class HomeController extends Controller{
     }
 
     public function contact(Request $request){
-       $this->title = "Contact";
-       $this->message = "Super Fancy Message";
+       $this->title = t("contact");
     }
 
     public function login(Request $request){
-
+        $this->title=t("login");
     }
 
     public function dologin(Request $request){
@@ -47,13 +46,14 @@ class HomeController extends Controller{
             $user = User::login($email, $pw);
         }catch (Exception $ex){
             $this->message = $ex->getMessage();
+            $this->title=t("login");
             return "Login";
         }
         $_SESSION["user"] = $user->getId();
         $_SESSION["isAdmin"]=$user->getIsAdmin();
         $_SESSION["isLoggedIn"]=true;
 
-        $this->message = "$email sucessfully logged in.";
+        $this->message = "$email ".t("loggedIn");
 
         return "Home";
     }
@@ -64,13 +64,14 @@ class HomeController extends Controller{
         $_SESSION["isAdmin"]=false;
         $_SESSION["isLoggedIn"]=false;
 
-        $this->message = "You sucessfully logged out.";
+        $this->message = t("loggedOut");
         return "Home";
     }
 
     public function processOrder(Request $requst){
         if(!(array_key_exists("user", $_SESSION)&&!is_null($_SESSION["user"]))){
-            $this->message = "You need to be logged in to use the shopping cart";
+            $this->message = t("requireLogin");
+            $this->title=t("login");
             return "login";
         }
         $member_id = $_SESSION["user"];
@@ -105,18 +106,18 @@ class HomeController extends Controller{
         $mailer = new OrderMailer($user->getEmail(), $order, $item_price);
         $mailer->sendMail();
         $shoppingCart->emptyCart($member_id);
-        $this->message = "your order will be processed soon.";
+        $this->message = t("orderSuccessful");
         return "home";
     }
 
     public function checkout(Request $request){
         $this->data = User::getById($_SESSION["user"]);
-        $this->title = "Checkout";
+        $this->title = t("checkout");
     }
 
     public function addItemToShoppingCart(Request $request){
         if(!(array_key_exists("user", $_SESSION)&&!is_null($_SESSION["user"]))){
-            $this->message = "You need to be logged in to use the shopping cart";
+            $this->message = t("requireLogin");
             return "login";
         }
         $member_id = $_SESSION["user"];
@@ -136,6 +137,7 @@ class HomeController extends Controller{
                 $shoppingCart->addToCart($productResult[0]["id"], $_POST["quantity"], $member_id);
             }
         }
+        $this->title=t("products");
         return "products";
     }
 
@@ -163,14 +165,14 @@ class HomeController extends Controller{
 
 
     public function getShoppingCart(Request $request){
-
+        
     }
 
     public function getItemDetailView(Request $request){
 
     }
     public function register(Request $request){
-
+        $this->title=t("register");
     }
 
     public function activate(Request $request){
@@ -180,10 +182,10 @@ class HomeController extends Controller{
         try{
             User::activate($code);
         }catch(Exception $ex){
-            $this->message = "Invalid Activation Code";
+            $this->message = t("invalidActivation");
             return "Home";
         }
-        $this->message = "Activated successfully";
+        $this->message = t("validActivation");
         return "Home";
     }
 
@@ -232,31 +234,31 @@ class HomeController extends Controller{
     private function checkFields($firstname, $lastname, $address, $plz, $city, $email, $cemail, $pw, $cpw, $pwMayBeEmpty=false){
         $errMsg="";
         if(!preg_match("/^[a-zA-Z äöüÄÖÜ]+$/", $firstname)){
-            $errMsg.="Invalid Firstname<br/>";
+            $errMsg.=t("invalidFirstname")."<br/>";
         }
         if(!preg_match("/^[a-zA-Z äöüÄÖÜ]+$/", $lastname)){
-            $errMsg.="Invalid Lastname<br/>";
+            $errMsg.=t("invalidLastname")."<br/>";
         }
         if(!preg_match("/^[a-zA-Z äöüÄÖÜ]+ [\w]+$/", $address)){
-            $errMsg.="Invalid Address<br/>";
+            $errMsg.=t("invalidAddress")."<br/>";
         }
         if(!preg_match("/^[\d]{4}$/", $plz)){
-            $errMsg.="Invalid PLZ<br/>";
+            $errMsg.=t("invalidPlz")."<br/>";
         }
         if(!preg_match("/^[\w äöüÄÖÜ]+$/", $city)){
-            $errMsg.="Invalid City<br/>";
+            $errMsg.=t("invalidCity")."<br/>";
         }
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $errMsg.= "Invalid Email<br/>";
+            $errMsg.=t("invalidEmail"). "<br/>";
         }
         if($email!==$cemail){
-            $errMsg.="Invalid confirmEmail<br/>";
+            $errMsg.=t("invalidCEmail")."<br/>";
         }
         if(!preg_match("/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d$@$!%*#?&]{8,}$/", $pw)&&!($pwMayBeEmpty&&$pw=="")){
-            $errMsg.="Invalid Password<br/>";
+            $errMsg.=t("invalidPassword")."<br/>";
         }
         if($pw!==$cpw){
-            $errMsg.="Invalid confirmPassword<br/>";
+            $errMsg.=t("invalidCPassword")."<br/>";
         }
         return $errMsg;
     }
@@ -275,21 +277,22 @@ class HomeController extends Controller{
         $errMsg = $this->checkFields($firstname, $lastname, $address, $plz, $city, $email, $cemail, $pw, $cpw, false);
         if($errMsg!==""){
             $this->message = $errMsg;
+            $this->title = t("register");
             return "register";
         }
         try{
             $user = User::create($firstname, $lastname, $address, $plz, $city, $email, $pw);
         }catch(Exception $ex){
             $this->message = $ex->getMessage();
+            $this->title = t("register");
             return "register";
         }
 
         $mailer = new RegisterMailer($user);
 
         if(!$mailer->sendMail()){
-            echo "Mailer Error: " . $mailer->getExceptionDetails();
         }else {
-            $this->message = "you have been registred sucessfully. Please activate your account. ";
+            $this->message = t("registerSuccessful");
         }
 
         return "Home";
