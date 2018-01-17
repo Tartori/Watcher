@@ -1,7 +1,0 @@
-page=Page 
-content=Bienvenue
-title=Mon produits
-home=Home
-proucts=Produkte
-info=Informationen
-contact=Kontaktinfo
