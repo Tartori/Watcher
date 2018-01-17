@@ -1,4 +1,4 @@
-<?php	
+<?php
 	require_once "lib/helpers.php";
 	$language = get_param('lang', 'de');
 	$pageId = get_param('id', 0);
@@ -12,7 +12,7 @@
 </head>
 <body>
 	<?php include('php/header.php'); ?>
-	<?php include('php/wheel.php'); ?>	
+
 	<div class="row">
 		<nav class="column col-1">
 			<?php navigation($language, $pageId); ?>
@@ -28,8 +28,8 @@
 			}
 			else{
 				echo "under construction";
-			} ?>	
+			} ?>
 	</div>
-	<?php include('php/footer.php'); ?>
+
 </body>
 </html>
