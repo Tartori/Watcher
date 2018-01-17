@@ -27,7 +27,7 @@
 				include($innerTpl);
 			}
 			else{
-				echo "under construction";
+				echo t("underConstruction");
 			} ?>
 	</div>
 

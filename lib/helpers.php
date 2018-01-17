@@ -48,7 +48,7 @@ function navigation($language, $pageId) {
 		add_param( $url, "action", $nav["actionCall"]);
 		add_param( $url, "controller", $nav["controller"]);
 		$class = $action == $nav["actionCall"] ? 'active' : 'inactive';
-		echo "<a class=\"$class\" href=\"$url\">".$nav["actionCall"]."</a>";
+		echo "<a class=\"$class\" href=\"$url\">".t($nav["actionCall"]->__toString())."</a>";
 	}
 }
 

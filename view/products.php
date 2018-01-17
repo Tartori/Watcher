@@ -99,7 +99,7 @@ if (! empty($cartItem)) {
 
             <a id="btnEmpty" href="index.php?action=emptyItemToShoppingCart"><img
                 src="img/image/empty-cart.png" alt="empty-cart"
-                title="Empty Cart" class="float-right" /></a>
+                title="<?php echo t("emptyCart"); ?>" class="float-right" /></a>
             <div class="cart-status">
                 <div>Total Quantity:<span id="total-quantity"> <?php echo $item_quantity; ?></div>
                 <div>Total Price:<span id="total-price"> $ <?php echo $item_price; ?></div>
@@ -112,7 +112,7 @@ if (! empty($cartItem)) {
             require_once ("cart-list.php");
             ?>
             <div class="align-right">
-            <a href="index.php?action=checkout"><button class="btn-action" name="check_out">Go To Checkout</button></a>
+            <a href="index.php?action=checkout"><button class="btn-action" name="check_out"><?php echo t("goToCheckout"); ?></button></a>
             </div>
 <?php
         } // End if !empty $cartItem

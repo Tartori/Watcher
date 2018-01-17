@@ -1,8 +1,8 @@
 <table>
     <tr>
-        <th>Product Id</th>
-        <th>Price</th>
-        <th>Quantity</th>
+        <th><?php echo t("productId"); ?></th>
+        <th><?php echo t("price"); ?></th>
+        <th><?php echo t("quantity"); ?></th>
     </tr>
     <?php
         foreach($data as $order){
@@ -14,4 +14,4 @@
         }
     ?>
 </table>
-<a href='index.php?controller=admin&action=checkAllOrders'>back<a/>
+<a href='index.php?controller=admin&action=checkAllOrders'><?php echo t("back"); ?><a/>

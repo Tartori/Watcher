@@ -1,3 +1,3 @@
-<h2> Welcome to our Shop. </h2>
-<p> Please login to order some watches. </p>
-<p> Thanks for choosing us </p>
+<h2><?php echo t("welcome"); ?></h2>
+<p> <?php echo t("pleaseLogin"); ?>Please login to order some watches. </p>
+<p> <?php echo t("thanks"); ?> </p>
