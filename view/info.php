@@ -1,1 +1,1 @@
-<h1>We sell Watches - duh!</h1>
+<h1><?php echo t("infoText"); ?></h1>

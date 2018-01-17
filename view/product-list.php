@@ -1,6 +1,6 @@
 <div id="product-grid">
     <div class="txt-heading">
-        <div class="txt-heading-label">Products</div>
+        <div class="txt-heading-label"><?php echo t("products"); ?></div>
     </div>
     <?php
     $product_array = $shoppingCart->getAllProduct();
