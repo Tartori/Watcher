@@ -73,7 +73,7 @@ class Product{
         )));
         
         if(is_null($result)){
-            throw new Exception("Unknown Product");
+            throw new Exception(t("unknownProduct"));
         }
         $this->loadFromDbRow($result[0]);
     }

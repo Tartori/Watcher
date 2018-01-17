@@ -25,7 +25,7 @@ class User {
         if(is_array($users)){
             foreach($users as $user){
                 if($user->getEmail()==$email){
-                    throw new Exception("Email already exists.");
+                    throw new Exception(t("emailExists"));
                 }
             }
         }
@@ -69,7 +69,7 @@ class User {
         )));
         
         if(is_null($result)){
-            throw new Exception("Unknown User");
+            throw new Exception(t("unknownUser"));
         }
         $this->loadFromDbRow($result[0]);
     }
@@ -81,7 +81,7 @@ class User {
             "param_value" => $code
         )));
         if(is_null($result)){
-            throw new Exception("Invalid or already used Activation Hash");
+            throw new Exception(t("invalidActivationHash"));
         }
         $this->loadFromDbRow($result[0]);
         $this->setActivated(true);
@@ -97,15 +97,15 @@ class User {
             "param_value" => $this->getEmail()
         )));
         if(is_null($result)){
-            throw new Exception("Invalid Password or Email");
+            throw new Exception(t("invalidLogin"));
         }
         if(password_verify($pw, $result[0]["Password"])){
             $this->loadFromDbRow($result[0]);
         } else{            
-            throw new Exception("Invalid Password or Email");
+            throw new Exception(t("invalidLogin"));
         }
         if($this->getActivated()!=true){
-            throw new Exception("User not yet Activated");
+            throw new Exception(t("userNotActivated"));
         }
     }
 
