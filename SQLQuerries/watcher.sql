@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 16, 2018 at 03:33 PM
+-- Generation Time: Jan 17, 2018 at 09:44 AM
 -- Server version: 10.1.26-MariaDB
 -- PHP Version: 7.1.9
 
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `Watcher`
+-- Database: `watcher`
 --
 
 -- --------------------------------------------------------
@@ -34,6 +34,18 @@ CREATE TABLE `tbl_cart` (
   `quantity` int(11) NOT NULL,
   `member_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_cart`
+--
+
+INSERT INTO `tbl_cart` (`id`, `product_id`, `quantity`, `member_id`) VALUES
+(14, 1, 1, 1),
+(15, 2, 1, 1),
+(16, 3, 1, 1),
+(17, 7, 1, 1),
+(18, 8, 1, 1),
+(19, 9, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -56,6 +68,14 @@ CREATE TABLE `tbl_order` (
   `order_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `tbl_order`
+--
+
+INSERT INTO `tbl_order` (`id`, `customer_id`, `amount`, `name`, `address`, `city`, `state`, `zip`, `country`, `payment_type`, `order_status`, `order_at`) VALUES
+(1, 1, 1500, 'Julian Stampfli', 'Talstrasse 26', 'MÃ¼nchenbuchsee', '', '3053', '', 'Invoice', 'PENDING', '2018-01-16 17:53:22'),
+(2, 1, 3800, 'Julian Stampfli', 'Talstrasse 26', 'MÃ¼nchenbuchsee', '', '3053', '', 'Invoice', 'PENDING', '2018-01-16 19:57:21');
+
 -- --------------------------------------------------------
 
 --
@@ -69,6 +89,16 @@ CREATE TABLE `tbl_order_item` (
   `item_price` double NOT NULL,
   `quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_order_item`
+--
+
+INSERT INTO `tbl_order_item` (`id`, `order_id`, `product_id`, `item_price`, `quantity`) VALUES
+(1, 1, 1, 1500, 1),
+(2, 2, 2, 800, 1),
+(3, 2, 1, 1500, 1),
+(4, 2, 7, 1500, 1);
 
 -- --------------------------------------------------------
 
@@ -103,12 +133,12 @@ CREATE TABLE `tbl_product` (
 --
 
 INSERT INTO `tbl_product` (`id`, `name`, `code`, `image`, `price`) VALUES
-(1, '3D Camera', '3DcAM01', 'camera.jpg', 1500.00),
-(2, 'External Hard Drive', 'USB02', 'external-hard-drive.jpg', 800.00),
-(3, 'Wrist Watch', 'wristWear03', 'watch.jpg', 300.00),
-(7, 'Casio', 'CA1', 'hoover.jpg', 1500.00),
-(8, 'Swatch', 'SW1', 'loewen.jpg', 800.00),
-(9, 'Radio', 'RA1', 'monument.jpg', 300.00);
+(1, 'Swatch Trueville', 'SwTru', 'swatchTrueville.jpg', 150.00),
+(2, 'Rolex Sky-Dweller', 'RoSky', 'rolexSkydweller.jpg', 38000.00),
+(3, 'Breitling Navitimer', 'breNav', 'breitlingNavitimer.jpg', 27000.00),
+(7, 'Casio G-Steel', 'CaGSteel', 'casioGSteel.jpg', 450.00),
+(8, 'Tissot Powermatic 80', 'TiPo', 'tissotPowermatic.jpg', 670.00),
+(9, 'Omega Planet Ocean Deep Black', 'OmPODB', 'omegaPlanetOceanDeepBlack.jpg', 5000.00);
 
 -- --------------------------------------------------------
 
@@ -130,6 +160,13 @@ CREATE TABLE `user` (
   `IsAdmin` tinyint(1) NOT NULL DEFAULT '0',
   `CreationDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`ID`, `Firstname`, `Lastname`, `AddressLine`, `PLZ`, `City`, `Email`, `Password`, `Activated`, `ActivationHash`, `IsAdmin`, `CreationDate`) VALUES
+(1, 'Julian', 'Stampfli', 'Talstrasse 26', 3053, 'MÃ¼nchenbuchsee', 'julianstampfli4@gmail.com', '$2y$10$lYogwzj6be53pNfxhPvaRulXnS3E9Ic04L3E3c3OBlwsJmR5UGsTS', 1, '', 1, '2018-01-16 15:45:33');
 
 --
 -- Indexes for dumped tables
@@ -180,19 +217,19 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `tbl_cart`
 --
 ALTER TABLE `tbl_cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `tbl_order`
 --
 ALTER TABLE `tbl_order`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tbl_order_item`
 --
 ALTER TABLE `tbl_order_item`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tbl_payment`
@@ -204,13 +241,13 @@ ALTER TABLE `tbl_payment`
 -- AUTO_INCREMENT for table `tbl_product`
 --
 ALTER TABLE `tbl_product`
-  MODIFY `id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
