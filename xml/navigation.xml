@@ -2,7 +2,6 @@
     <navigationEntry actionCall="home" requiredState="none" controller="home"/>
     <navigationEntry actionCall="products" requiredState="none" controller="home"/>
     <navigationEntry actionCall="info" requiredState="none" controller="home"/>
-    <navigationEntry actionCall="contact" requiredState="none" controller="home"/>
     <navigationEntry actionCall="register" requiredState="logout" controller="home"/>
     <navigationEntry actionCall="login" requiredState="logout" controller="home"/>
     <navigationEntry actionCall="logout" requiredState="login" controller="home"/>
