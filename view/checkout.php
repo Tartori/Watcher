@@ -5,14 +5,7 @@ $member_id = $_SESSION["user"]; // you can your integerate authentication module
 
 $shoppingCart = new ShoppingCart();
 ?>
-<HTML>
-<HEAD>
-<TITLE>Enriched Responsive Shopping Cart in PHP</TITLE>
-<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<link href="style.css" type="text/css" rel="stylesheet" />
-</HEAD>
-<BODY>
 <?php
 $cartItem = $shoppingCart->getMemberCartItem($member_id);
 $item_quantity = 0;
@@ -34,8 +27,8 @@ if (! empty($cartItem)) {
                 src="img/image/empty-cart.png" alt="empty-cart"
                 title="Empty Cart" class="float-right" /></a>
             <div class="cart-status">
-                <div>Total Quantity: <?php echo $item_quantity; ?></div>
-                <div>Total Price: $ <?php echo $item_price; ?></div>
+                <div>Total Quantity:<span id="total-quantity"> <?php echo $item_quantity; ?></div>
+                <div>Total Price:<span id="total-price"> $ <?php echo $item_price; ?></div>
             </div>
         </div>
         <?php
@@ -81,5 +74,3 @@ if (! empty($cartItem)) {
                 name="proceed_payment" value="Proceed to Payment">
     </div>
     </form>
-</BODY>
-</HTML>
