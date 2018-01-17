@@ -1,9 +1,9 @@
 
 <div class="shopping-cart-table">
         <div class="cart-item-container header">
-            <div class="cart-info title">Title</div>
-            <div class="cart-info">Quantity</div>
-            <div class="cart-info price">Price</div>
+            <div class="cart-info title"><?php echo t("title");?></div>
+            <div class="cart-info"><?php echo t("quantity");?></div>
+            <div class="cart-info price"><?php echo t("price");?></div>
         </div>
 <?php
             foreach ($cartItem as $item) {
@@ -39,7 +39,7 @@
                     href="index.php?controller=home&action=removeItemToShoppingCart&id=<?php echo $item["cart_id"]; ?>"
                     class="btnRemoveAction"><img
                     src="img/image/icon-delete.png" alt="icon-delete"
-                    title="Remove Item" /></a>
+                    title="<?php echo t("removeItem");?>" /></a>
             </div>
         </div>
 				<?php

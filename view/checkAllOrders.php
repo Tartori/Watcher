@@ -1,16 +1,18 @@
+<h1><?php echo t("orderInfo"); ?></h1>
+
 <table>
     <tr>
         <th>Id</th>
-        <th>CustomerID</th>
-        <th>Amount</th>
-        <th>Name</th>
-        <th>Address</th>
-        <th>City</th>
-        <th>PLZ</th>
-        <th>Payment Type</th>
-        <th>Status</th>
-        <th>Date</th>
-        <th>Detail</th>
+        <th><?php echo t("customerId");?></th>
+        <th><?php echo t("amount");?></th>
+        <th><?php echo t("name");?></th>
+        <th><?php echo t("address");?></th>
+        <th><?php echo t("city");?></th>
+        <th><?php echo t("plz");?></th>
+        <th><?php echo t("paymentType");?></th>
+        <th><?php echo t("status");?></th>
+        <th><?php echo t("date");?></th>
+        <th><?php echo t("detail");?></th>
     </tr>
     <?php
         foreach($data as $order){
@@ -25,7 +27,7 @@
             echo "<td>".$order["payment_type"]."</td>";
             echo "<td>".$order["order_status"]."</td>";
             echo "<td>".$order["order_at"]."</td>";
-            echo "<td><a href='index.php?controller=admin&action=orderDetail&id=".$order["id"]."'>detail<a/></td>";
+            echo "<td><a href='index.php?controller=admin&action=orderDetail&id=".$order["id"]."'>".t("detail")."<a/></td>";
             echo "</tr>";
         }
     ?>

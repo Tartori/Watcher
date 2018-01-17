@@ -25,10 +25,10 @@ if (! empty($cartItem)) {
 
             <a id="btnEmpty" href="index.php?action=empty"><img
                 src="img/image/empty-cart.png" alt="empty-cart"
-                title="Empty Cart" class="float-right" /></a>
+                title="<?php echo t("emptyCart"); ?> class="float-right" /></a>
             <div class="cart-status">
-                <div>Total Quantity:<span id="total-quantity"> <?php echo $item_quantity; ?></div>
-                <div>Total Price:<span id="total-price"> $ <?php echo $item_price; ?></div>
+                <div><?php echo t("totalQuantity"); ?>:<span id="total-quantity"> <?php echo $item_quantity; ?></div>
+                <div><?php echo t("totalPrice"); ?>:<span id="total-price"> $ <?php echo $item_price; ?></div>
             </div>
         </div>
         <?php
@@ -44,33 +44,33 @@ if (! empty($cartItem)) {
 </div>
     <form name="frm_customer_detail" action="index.php?action=processOrder" method="POST">
     <div class="frm-heading">
-        <div class="txt-heading-label">Customer Details</div>
+        <div class="txt-heading-label"><?php echo t("customerDetails"); ?></div>
     </div>
     <div class="frm-customer-detail">
         <div class="form-row">
             <div class="input-field">
                 <input type="text" name="name" id="name"
-                    PlaceHolder="Customer Name" value="<?php echo $data->getName(); ?>" required>
+                    PlaceHolder="<?php echo t("customerName"); ?>" value="<?php echo $data->getName(); ?>" required>
             </div>
 
             <div class="input-field">
-                <input type="text" name="address" PlaceHolder="Address" value="<?php echo $data->getAddressLine(); ?>" required>
+                <input type="text" name="address" PlaceHolder="<?php echo t("address"); ?>" value="<?php echo $data->getAddressLine(); ?>" required>
             </div>
         </div>
 
         <div class="form-row">
             <div class="input-field">
-                <input type="text" name="city" PlaceHolder="City" value="<?php echo $data->getCity(); ?>" required>
+                <input type="text" name="city" PlaceHolder="<?php echo t("city"); ?>" value="<?php echo $data->getCity(); ?>" required>
             </div>
 
             <div class="input-field">
-                <input type="text" name="zip" PlaceHolder="Zip Code" value="<?php echo $data->getPLZ(); ?>" required>
+                <input type="text" name="zip" PlaceHolder="<?php echo t("plz"); ?>" value="<?php echo $data->getPLZ(); ?>" required>
             </div>
 
         </div>
     </div>
     <div>
         <input type="submit" class="btn-action"
-                name="proceed_payment" value="Proceed to Payment">
+                name="proceed_payment" value="<?php echo t("proceedToPayment"); ?>">
     </div>
     </form>
