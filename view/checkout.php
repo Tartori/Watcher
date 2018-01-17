@@ -23,7 +23,7 @@ if (! empty($cartItem)) {
         <div class="txt-heading">
             <div class="txt-heading-label">Shopping Cart</div>
 
-            <a id="btnEmpty" href="index.php?action=empty"><img
+            <a id="btnEmpty" href="index.php?action=emptyItemToShoppingCart"><img
                 src="img/image/empty-cart.png" alt="empty-cart"
                 title="<?php echo t("emptyCart"); ?> class="float-right" /></a>
             <div class="cart-status">

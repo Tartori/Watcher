@@ -101,8 +101,8 @@ if (! empty($cartItem)) {
                 src="img/image/empty-cart.png" alt="empty-cart"
                 title="<?php echo t("emptyCart"); ?>" class="float-right" /></a>
             <div class="cart-status">
-                <div>Total Quantity:<span id="total-quantity"> <?php echo $item_quantity; ?></div>
-                <div>Total Price:<span id="total-price"> $ <?php echo $item_price; ?></div>
+                <div><?php echo t("totalQuantity");?>:<span id="total-quantity"> <?php echo $item_quantity; ?></div>
+                <div><?php echo t("totalPrice");?>:<span id="total-price"> $ <?php echo $item_price; ?></div>
             </div>
         </div>
         <?php
