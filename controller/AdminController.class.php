@@ -4,6 +4,11 @@ require_once 'autoloader.php';
 class AdminController extends Controller{
     
     public function editProducts(Request $request){
+        if(!(array_key_exists("user", $_SESSION)&&!is_null($_SESSION["user"]))){
+            $this->message = t("requireLogin");
+            $this->title=t("login");
+            return "login";
+        }
         $this->data = Product::getAllProducts();
         $this->title = t("editProducts");
 
@@ -11,6 +16,11 @@ class AdminController extends Controller{
     }
 
     public function deleteProduct(Request $request){
+        if(!(array_key_exists("user", $_SESSION)&&!is_null($_SESSION["user"]))){
+            $this->message = t("requireLogin");
+            $this->title=t("login");
+            return "login";
+        }
         $id=$request->getParameter("id", 0);
         try{
             $product= Product::getById($id);
@@ -22,6 +32,11 @@ class AdminController extends Controller{
     }
 
     public function saveProduct(Request $request){
+        if(!(array_key_exists("user", $_SESSION)&&!is_null($_SESSION["user"]))){
+            $this->message = t("requireLogin");
+            $this->title=t("login");
+            return "login";
+        }
         $errMsg = "";
         $id = $_POST['id'];
         $name = $_POST['name'];
@@ -44,11 +59,21 @@ class AdminController extends Controller{
     }
 
     public function checkAllOrders(Request $request){
+        if(!(array_key_exists("user", $_SESSION)&&!is_null($_SESSION["user"]))){
+            $this->message = t("requireLogin");
+            $this->title=t("login");
+            return "login";
+        }
         $shoppingCart = new ShoppingCart();
         $this->data = $shoppingCart->getAllOrders();
     }
 
     public function orderDetail(Request $request){
+        if(!(array_key_exists("user", $_SESSION)&&!is_null($_SESSION["user"]))){
+            $this->message = t("requireLogin");
+            $this->title=t("login");
+            return "login";
+        }
         $id=$request->getParameter("id", 0);
         $shoppingCart = new ShoppingCart();
         $this->data = $shoppingCart->getOrderDetails($id);
@@ -56,6 +81,11 @@ class AdminController extends Controller{
     }
 
     public function editProductView(Request $request){
+        if(!(array_key_exists("user", $_SESSION)&&!is_null($_SESSION["user"]))){
+            $this->message = t("requireLogin");
+            $this->title=t("login");
+            return "login";
+        }
         $id=$request->getParameter("id", 0);
         try{
             $product= Product::getById($id);
@@ -69,6 +99,11 @@ class AdminController extends Controller{
     }
 
     public function addProductView(Request $request){
+        if(!(array_key_exists("user", $_SESSION)&&!is_null($_SESSION["user"]))){
+            $this->message = t("requireLogin");
+            $this->title=t("login");
+            return "login";
+        }
         $this->title = t("addProduct");
         return "editForm";
     }

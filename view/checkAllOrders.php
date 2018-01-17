@@ -4,7 +4,7 @@
     <tr>
         <th>Id</th>
         <th><?php echo t("customerId");?></th>
-        <th><?php echo t("amount");?></th>
+        <th><?php echo t("price");?></th>
         <th><?php echo t("name");?></th>
         <th><?php echo t("address");?></th>
         <th><?php echo t("city");?></th>
